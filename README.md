@@ -1,6 +1,5 @@
 # green
 
-
 Welke classes zijn er nodig?
 - huizen
     * positie
