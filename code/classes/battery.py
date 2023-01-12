@@ -10,3 +10,6 @@ class Battery(object):
 
     def has_capacity(self):
         return self.capacity
+
+    def reduce_capacity(self, house):
+        self.capacity = self.capacity - house.capacity

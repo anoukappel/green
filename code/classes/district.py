@@ -5,11 +5,13 @@ import csv
 
 class District(object):
     # def __init__(self, source_file, battery_file, houses_file):
-    def __init__(self, houses_file, battery_file, geo_json=None):
-        self.houses = self.load_houses(houses_file)
-        self.batteries = self.load_batteries(battery_file)
+    # def __init__(self, houses_file, battery_file, geo_json=None):
+    def __init__(self, source_file, geo_json=None):
+        self.houses = self.load_houses(f"{source_file}/district-1_houses.csv")
+        # self.batteries = self.load_batteries(battery_file)
+        self.batteries = self.load_batteries(f"{source_file}/district-1_batteries.csv")
         #save the district number
-        #self.district = int(source_file[-1])
+        self.district = int(source_file[-1])
 
 
     def load_houses(self, houses_file):
