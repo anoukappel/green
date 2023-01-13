@@ -1,16 +1,15 @@
-# from .district import District
-# from .battery import Battery
-# from math import abs
+
+
 
 class House(object):
     def __init__(self, x_position, y_position, maxoutput):
         self.x_position = x_position
         self.y_position = y_position
         self.maxoutput = maxoutput
-        # self.houses_connected = {}
         self.connected = False
         self.connected_battery = None
         self.cables = []
+        self.distance_to_battery = None
 
     def is_connected(self):
         return self.connected
@@ -26,17 +25,16 @@ class House(object):
     def get_closest_battery(self, batteries):
         """ returnes battery which is closest to the house """
         standard = 10000
-        battery = 0
+        battery = None
         for item in batteries:
             if self.get_distance_to_battery(item) < standard and (item.capacity - self.maxoutput) > 0:
                 battery = item
                 standard = self.get_distance_to_battery(item)
-        battery.reduce_capacity(self)
+                self.distance_to_battery = standard
         return battery
 
     def add_cable(self, x_position, y_position):
         """ add postition of cable to the object House"""
-        # self.cables.append(f"{x_position},{y_position}")
         self.cables.append([x_position,y_position])
 
 
@@ -68,3 +66,7 @@ class House(object):
         """ add route of cables needed to go from house to battery """
         self.add_horizontal_steps(battery)
         self.add_vertical_steps(battery)
+
+    def __repr__(self):
+        """ Let the object be printed properly when its called for """
+        return f"Postition house: ({self.x_position},{self.y_position}), maxoutput: {self.maxoutput}"
