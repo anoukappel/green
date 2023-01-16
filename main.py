@@ -1,5 +1,6 @@
 from code.classes import battery, district, house, model
 from code.algorithms import random
+from code.solutions import save_solution
 
 if __name__ == "__main__":
     """ creation of district object """

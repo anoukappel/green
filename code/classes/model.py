@@ -5,6 +5,7 @@ class Model(object):
         self.houses = district.houses
         self.batteries = district.batteries
         self.solution = {house: None for house in self.houses}
+        self.district = district
 
 
     def is_solution(self):
