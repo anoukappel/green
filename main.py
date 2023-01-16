@@ -1,5 +1,7 @@
 from code.classes import battery, district, house, model
 from code.algorithms import random
+from code.solutions import save_solutions
+
 from statistics import mean
 
 import matplotlib.pyplot as plt
