@@ -26,7 +26,7 @@ def create_house_dict(solution, battery):
     return houses
 
 def create_battery_dict(solution, dict):
-    for battery in solution.batteries:
+    for battery in solution.district.batteries:
         houses = create_house_dict(solution, battery)
         dict.append({
             "location": f"{battery.x_position}, {battery.y_position}",
@@ -36,7 +36,7 @@ def create_battery_dict(solution, dict):
 
 def save(filename, solution):
     district = solution.district.district
-    own_costs = calculate_costs_cables(solution.houses) + calculate_costs_batteries(solution.batteries)
+    own_costs = calculate_costs_cables(solution.district.houses) + calculate_costs_batteries(solution.district.batteries)
     output = [
                 {
                     "district": district,
