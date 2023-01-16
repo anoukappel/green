@@ -40,7 +40,7 @@ class Model(object):
         """ battery is None when it was not possible to connect the house to a battery """
         if battery is not None:
             battery.reduce_capacity(house)
-            house.get_closest_battery(batteries)
+            # house.get_closest_battery(batteries)
             house.add_route_from_house_to_battery(battery)
         self.solution[house] = battery
 
