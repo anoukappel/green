@@ -29,9 +29,9 @@ class House(object):
         standard = 10000
         position = None
         for item in list:
-            if self.get_distance_to_battery_or_cable(item[0][0], item[0][1]) < standard:
+            if self.get_distance_to_battery_or_cable(item[0], item[1]) < standard:
                 position = item
-                standard = self.get_distance_to_battery_or_cable(item[0][0],item[0][1])
+                standard = self.get_distance_to_battery_or_cable(item[0],item[1])
         return position
 
 

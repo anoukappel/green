@@ -1,4 +1,4 @@
-
+import itertools
 
 class Model(object):
     def __init__(self, district):
@@ -10,12 +10,18 @@ class Model(object):
         startpoint of list in list is position of house
         """
         self.battery_cable = {}
+        self.set_with_positions = {}
 
     def fill_battery_cable(self):
         for battery in self.district.batteries:
             self.battery_cable[battery] = [[[battery.x_position, battery.y_position]]]
-        test_bat = self.district.batteries[0]
-        # print(self.battery_cable[test_bat][0][0])
+
+    def fill_set_with_positions(self):
+        for battery in self.district.batteries:
+            list = []
+            list.append([battery.x_position, battery.y_position])
+            self.set_with_positions[battery] = list
+
 
     def is_solution(self):
         """
@@ -51,10 +57,11 @@ class Model(object):
 
             battery = None
             for key in self.battery_cable:
-                for item in self.battery_cable[key]:
-                    if item == position:
-                        battery = key
-                        break
+                for list in self.battery_cable[key]:
+                    for item in list:
+                        if item == position:
+                            battery = key
+                            break
 
             """ battery is None when it was not possible to connect the house to a battery """
             if battery is not None:
@@ -72,19 +79,15 @@ class Model(object):
             list.append([item.x_position, item.y_position])
         return list
 
+
     def get_available_batteries(self, house):
         """ returns gridpoints batteries and cables that are available """
         list = []
         for battery in self.district.batteries:
             if battery.capacity > house.maxoutput:
-                for item in self.battery_cable[battery]:
-                    # for item in sublist:
-                        # print(item)
+                for item in self.set_with_positions[battery]:
                     list.append(item)
-                        # print(list)
         return list
-
-
 
 
     def get_total_costs(self):
@@ -109,39 +112,55 @@ class Model(object):
         self.battery_cable[battery].append(list)
 
 
-    def add_horizontal_steps(self, position, house):
+
+    def add_horizontal_steps(self, position, house, battery):
         """ adding the horizontal steps towards the battery """
         list = []
-        if house.x_position < position[0][0]:
-            steps = position[0][0] - house.x_position
+        if house.x_position < position[0]:
+            steps = position[0] - house.x_position
             for i in range(steps + 1):
                 self.add_cable(house.x_position+i, house.y_position)
                 list.append([house.x_position+i, house.y_position])
+                self.set_with_positions[battery].append([house.x_position+i, house.y_position])
         else:
-            steps = house.x_position - position[0][0]
+            steps = house.x_position - position[0]
             for i in range(steps + 1):
                 self.add_cable(house.x_position-i, house.y_position)
                 list.append([house.x_position-i, house.y_position])
+                self.set_with_positions[battery].append([house.x_position-i, house.y_position])
         return list
 
 
-    def add_vertical_steps(self, position, house, list):
+    def add_vertical_steps(self, position, house, list, battery):
         """ adding the vertical steps towards the battery, from postition of latest cable """
-        if house.y_position < position[0][1]:
-            steps = position[0][1] - house.y_position
+        if house.y_position < position[1]:
+            steps = position[1] - house.y_position
             for i in range(steps):
-                self.add_cable(position[0][0], house.y_position + i + 1)
-                list.append([position[0][0], house.y_position + i + 1])
+                self.add_cable(position[0], house.y_position + i + 1)
+                list.append([position[0], house.y_position + i + 1])
+                self.set_with_positions[battery].append([position[0], house.y_position + i + 1])
         else:
-            steps = house.y_position - position[0][1]
+            steps = house.y_position - position[1]
             for i in range(steps):
-                self.add_cable(position[0][0], house.y_position - i - 1)
-                list.append([position[0][0], house.y_position - i - 1])
+                self.add_cable(position[0], house.y_position - i - 1)
+                list.append([position[0], house.y_position - i - 1])
+                self.set_with_positions[battery].append([position[0], house.y_position - i - 1])
         return list
 
+
+    # def remove_duplicates(self):
+    #     for key in self.set_with_positions:
+    #         duplicates = self.set_with_positions[key]
+    #         tpls = [tuple(x) for x in duplicates]
+    #         dct = list(dict.fromkeys(tpls))
+    #         dup_free = [list(x) for x in duplicates]
+    #         dup_free.sort()
+    #         self.set_with_positions[key] = dup_free
+    #         print(dup_free)
 
     def add_route_from_house_to_battery(self, battery, house, position):
         """ add route of cables needed to go from house to battery """
-        list = self.add_horizontal_steps(position, house)
-        list_with_coordinates = self.add_vertical_steps(position, house, list)
+        list = self.add_horizontal_steps(position, house, battery)
+        list_with_coordinates = self.add_vertical_steps(position, house, list, battery)
+        # self.remove_duplicates()
         self.connect_battery_to_cable(battery, list_with_coordinates)
