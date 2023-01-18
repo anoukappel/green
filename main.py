@@ -31,6 +31,11 @@ if __name__ == "__main__":
             test = district.District(file)
             model_2 = model.Model(test)
             solution = random.random_assignment(model_2)
+
+    # print(solution.is_solution())
+    # print(solution.solution)
+    # for house in solution.district.houses:
+    #     print(solution.solution[house])
     # print(solution.is_solution())
     # test_bat = solution.district.batteries[0]
     # print(f"({test_bat.x_position}, {test_bat.y_position})")
@@ -43,31 +48,34 @@ if __name__ == "__main__":
     #     for item in solution.battery_cable[key]:
     #         print(item)
             # print("1")
-
-            # new_run = True
+    #
+    #         new_run = True
     # print(solun.solution)
     # test_bat = solution.district.batteries[0]
     # print(solution.battery_cable[test_bat][1])
-
-
-        # for house in solution.houses:
-        #     print(solution[house].x_position )
-        # "Er voor zorgen dat model dat gebruikt wordt zelfde naam heeft"
-        # if new_run is True:
-        #     model_new = model_2
-        # else:
-        #     model_new = model_test
-
+    #
+    #
+    #     for house in solution.houses:
+    #         print(solution[house].x_position )
+    #     "Er voor zorgen dat model dat gebruikt wordt zelfde naam heeft"
+    #     if new_run is True:
+    #         model_new = model_2
+    #     else:
+    #         model_new = model_test
+    #
     # print(f"Every house had a connection to a battery: {solution.is_solution()}")
     # for house in solution.houses:
     #     print()
     # "X coordinaat batterij printen waaraan huis verbonden is"
     # for house in solution.houses:
     #     print(model_new.solution[house].x_position)
-
+    #
     # print(solution.houses[0].cables)
 
-    # " Totale afstand kabels berekenen"
+
+
+    #
+    # # " Totale afstand kabels berekenen"
     sum = len(solution.cables)
     # for house in solution.district.houses:
     #     sum += house.get_distance_to_battery(solution.solution[house])
@@ -148,7 +156,6 @@ if __name__ == "__main__":
             # print(cable_point)
             cb_x.append(cable_point[0])
             cb_y.append(cable_point[1])
-        print(cb_x)
         plt.plot(cb_x, cb_y, 'b-')
 
     # "Data from district for plotting (batteries and houses)"
@@ -178,7 +185,7 @@ if __name__ == "__main__":
 
     # " Creating a plot of all connections"
     creating_grid_district(x_batteries, y_batteries, x_houses, y_houses)
-
+    count = 1
     # for house in solution.district.houses:
     #     plot_cables_house(house.cables)
     for key in solution.battery_cable:
@@ -190,9 +197,11 @@ if __name__ == "__main__":
             # y_pos = int(item[0][1])
             coordinates = item
             # print(len(coordinates))
-            if len(coordinates) != 2:
+            # if len(coordinates) != 2:
                 # print(coordinates)
-                plot_cables_house(coordinates)
+            print(count)
+            plot_cables_house(coordinates)
+            count += 1
 
     # plot_cables_house(solution.cables)
 

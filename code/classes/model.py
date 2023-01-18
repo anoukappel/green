@@ -52,11 +52,11 @@ class Model(object):
         Set the connection between house and battery.
         """
         if self.get_available_batteries(house) != []:
-
-            position = house.get_closest_battery_or_cable(self.get_available_batteries(house))
+            list_grids, list_batteries = self.get_available_batteries(house)
+            position = house.get_closest_battery_or_cable(list_grids)
 
             battery = None
-            for key in self.battery_cable:
+            for key in list_batteries:
                 for list in self.battery_cable[key]:
                     for item in list:
                         if item == position:
@@ -83,12 +83,15 @@ class Model(object):
 
     def get_available_batteries(self, house):
         """ returns gridpoints batteries and cables that are available """
-        list = []
+        list_grids = []
+        list_batteries = []
         for battery in self.district.batteries:
+            # print(battery.capacity)
             if battery.capacity > house.maxoutput:
+                list_batteries.append(battery)
                 for item in self.set_with_positions[battery]:
-                    list.append(item)
-        return list
+                    list_grids.append(item)
+        return list_grids, list_batteries
 
 
     def get_total_costs(self):
@@ -158,7 +161,7 @@ class Model(object):
             dup_free = [list(x) for x in set1]
             dup_free.sort()
             self.set_with_positions[key] = dup_free
-            print(dup_free)
+            # print(dup_free)
 
     def add_route_from_house_to_battery(self, battery, house, position):
         """ add route of cables needed to go from house to battery """
