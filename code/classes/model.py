@@ -68,6 +68,7 @@ class Model(object):
                 battery.reduce_capacity(house)
                 self.add_route_from_house_to_battery(battery, house, position)
             self.solution[house] = battery
+            # print(self.set_with_positions)
 
 
     def get_battery_positions(self):
@@ -148,19 +149,20 @@ class Model(object):
         return list
 
 
-    # def remove_duplicates(self):
-    #     for key in self.set_with_positions:
-    #         duplicates = self.set_with_positions[key]
-    #         tpls = [tuple(x) for x in duplicates]
-    #         dct = list(dict.fromkeys(tpls))
-    #         dup_free = [list(x) for x in duplicates]
-    #         dup_free.sort()
-    #         self.set_with_positions[key] = dup_free
-    #         print(dup_free)
+    def remove_duplicates(self):
+        for key in self.set_with_positions:
+            duplicates = self.set_with_positions[key]
+            tpls = [tuple(x) for x in duplicates]
+            set1 = set(tpls)
+            # dct = list(dict.fromkeys(tpls))
+            dup_free = [list(x) for x in set1]
+            dup_free.sort()
+            self.set_with_positions[key] = dup_free
+            print(dup_free)
 
     def add_route_from_house_to_battery(self, battery, house, position):
         """ add route of cables needed to go from house to battery """
         list = self.add_horizontal_steps(position, house, battery)
         list_with_coordinates = self.add_vertical_steps(position, house, list, battery)
-        # self.remove_duplicates()
+        self.remove_duplicates()
         self.connect_battery_to_cable(battery, list_with_coordinates)
