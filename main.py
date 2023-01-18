@@ -1,6 +1,6 @@
 from code.classes import battery, district, house, model
 from code.algorithms import random
-from code.solutions import save_solutions
+from code.solutions import save_solution
 
 from statistics import mean
 
@@ -25,15 +25,34 @@ if __name__ == "__main__":
 
         model_test = model.Model(district_test)
         solution = random.random_assignment(model_test)
+        # if solution.is_solution() is True:
+        #     print("True")
         while solution.is_solution() is False:
             test = district.District(file)
             model_2 = model.Model(test)
             solution = random.random_assignment(model_2)
+    # print(solution.is_solution())
+    # test_bat = solution.district.batteries[0]
+    # print(f"({test_bat.x_position}, {test_bat.y_position})")
+    # print(solution.battery_cable[test_bat][5])
+    # print(len(solution.cables))
+    # print(solution.get_total_costs())
+    # print(solution.district.batteries)
+    # for key in solution.battery_cable:
+    #     print(key)
+    #     for item in solution.battery_cable[key]:
+    #         print(item)
+            # print("1")
+
             # new_run = True
+    # print(solun.solution)
+    # test_bat = solution.district.batteries[0]
+    # print(solution.battery_cable[test_bat][1])
+
 
         # for house in solution.houses:
         #     print(solution[house].x_position )
-        "Er voor zorgen dat model dat gebruikt wordt zelfde naam heeft"
+        # "Er voor zorgen dat model dat gebruikt wordt zelfde naam heeft"
         # if new_run is True:
         #     model_new = model_2
         # else:
@@ -48,12 +67,12 @@ if __name__ == "__main__":
 
     # print(solution.houses[0].cables)
 
-        " Totale afstand kabels berekenen"
-        sum = 0
-        for house in solution.houses:
-            sum += house.distance_to_battery
-        #
-        list_cable_lengths.append(sum)
+    # " Totale afstand kabels berekenen"
+    sum = len(solution.cables)
+    # for house in solution.district.houses:
+    #     sum += house.get_distance_to_battery(solution.solution[house])
+    # #
+    list_cable_lengths.append(sum)
 
         # print(f"Total number of cables needed: {sum}")
 
@@ -68,15 +87,15 @@ if __name__ == "__main__":
 
     # Show plot
     # plt.show()
-    " De plot laat zien dat de kabellengtes berekent met het random algoritme normaal verdeeld is, er zijn geen sterke uitschieters te zien"
-    "In het geval van scheve verdelingen en verdelingen met uitbijters wordt het gemiddelde makkelijk beïnvloed door extreme waarden, waardoor je geen goed beeld krijgt van de centrale tendens."
-    "https://www.scribbr.nl/statistiek/gemiddelde/"
+    # " De plot laat zien dat de kabellengtes berekent met het random algoritme normaal verdeeld is, er zijn geen sterke uitschieters te zien"
+    # "In het geval van scheve verdelingen en verdelingen met uitbijters wordt het gemiddelde makkelijk beïnvloed door extreme waarden, waardoor je geen goed beeld krijgt van de centrale tendens."
+    # "https://www.scribbr.nl/statistiek/gemiddelde/"
 
     average = mean(list_cable_lengths)
     print(f"Average sum of cables using random algorithm is: {average}" )
 
 
-    " Lijsten maken om huizen en batterijen in op te slaan voor scatterplot"
+    # " Lijsten maken om huizen en batterijen in op te slaan voor scatterplot"
 
     def creating_list_for_coordinates(district):
         x = []
@@ -89,7 +108,7 @@ if __name__ == "__main__":
         return x, y
 
 
-    " Basis plaatje met alle huizen en batterijen erop afgebeeld van bepaalde wijk"
+    # " Basis plaatje met alle huizen en batterijen erop afgebeeld van bepaalde wijk"
     def creating_grid_district(x_batteries, y_batteries, x_houses, y_houses):
             fig = plt.figure(figsize=(10, 8))
             ax = fig.add_subplot(1, 1, 1)
@@ -126,36 +145,56 @@ if __name__ == "__main__":
         cb_y = []
 
         for cable_point in cables_coordinates:
+            # print(cable_point)
             cb_x.append(cable_point[0])
             cb_y.append(cable_point[1])
-
+        print(cb_x)
         plt.plot(cb_x, cb_y, 'b-')
 
-    "Data from district for plotting (batteries and houses)"
+    # "Data from district for plotting (batteries and houses)"
 
     x_batteries, y_batteries = creating_list_for_coordinates(district_test.batteries)
     x_houses, y_houses = creating_list_for_coordinates(district_test.houses)
 
-    " Showing all the batteries in a seperate plot"
-    for battery in district_test.batteries:
+    # " Showing all the batteries in a seperate plot"
+    # for battery in district_test.batteries:
+    #
+    #     creating_grid_district(x_batteries, y_batteries, x_houses, y_houses)
 
-        creating_grid_district(x_batteries, y_batteries, x_houses, y_houses)
-
-        for house in solution.houses:
-
-            # you only want to plot those houses which are connected to the current battery
-            if solution.solution[house]!= battery:
-            # if solution.solution[house].x_position != battery.x_position and solution.solution[house].y_position != battery.y_position:
-                continue
-
-            plot_cables_house(house.cables)
+        # for key in solution.battery_cable:
+        #     for item in solution.battery_cable[key]:
 
 
-    " Creating a plot of all connections"
+
+        # for house in solution.district.houses:
+        #
+        #     # you only want to plot those houses which are connected to the current battery
+        #     if solution.solution[house]!= battery:
+        #     # if solution.solution[house].x_position != battery.x_position and solution.solution[house].y_position != battery.y_position:
+        #         continue
+        #
+        #     plot_cables_house(solution.cables)
+
+
+    # " Creating a plot of all connections"
     creating_grid_district(x_batteries, y_batteries, x_houses, y_houses)
 
-    for house in solution.houses:
-        plot_cables_house(house.cables)
+    # for house in solution.district.houses:
+    #     plot_cables_house(house.cables)
+    for key in solution.battery_cable:
+        # print(key)
+        # print(solution.battery_cable[key])
+        for item in solution.battery_cable[key]:
+            # print(item)
+            # x_pos = int(item[0][0])
+            # y_pos = int(item[0][1])
+            coordinates = item
+            # print(len(coordinates))
+            if len(coordinates) != 2:
+                # print(coordinates)
+                plot_cables_house(coordinates)
 
-    " Showing all the plots"
+    # plot_cables_house(solution.cables)
+
+    # " Showing all the plots"
     plt.show()
