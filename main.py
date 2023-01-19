@@ -1,5 +1,5 @@
 from code.classes import battery, district, house, model
-from code.algorithms import random
+from code.algorithms import random, hillclimber
 from code.solutions import save_solution
 from code.visualisatie import histogram, scatterplot
 
@@ -14,14 +14,29 @@ if __name__ == "__main__":
     # object district aanmaken bestaande uit batteries en huizen data
     district_test = district.District(file)
 
-    """ Random assignment of house to battery, when solution invalid run again. """
-    # model object aanmaken, district object meegeven
+    """ Hillclimber algortihm """
+    model_test = model.Model(district_test)
 
+    while model_test.is_solution() is False:
+        model_2 = model.Model(district_test)
+        model_test = random.random_assignment(model_2)
+    print("hillclimber is beginning:")
+    hill_algo = hill_algo.HillClimber(model_test)
+
+    # print(model_test.battery_capacity)
+    # print(model_test.is_solution())
+    # solution = hillclimber.HillClimber(model_test)
+    # solution.switch_random_houses_from_battery()
+
+
+    """ dit is visualisatie """
+     """ Random assignment of house to battery, when solution invalid run again. """
+    # model object aanmaken, district object meegeven
     #list maken van alle sums
     list_cable_lengths = []
     first_loop = True
     # 1000 x random laten lopen
-    number_of_loops = 100
+    number_of_loops = 10000
     for i in range(number_of_loops):
         # new_run = False
 
@@ -70,7 +85,7 @@ if __name__ == "__main__":
     x_batteries, y_batteries = scatterplot.creating_list_for_coordinates(district_test.batteries)
     x_houses, y_houses = scatterplot.creating_list_for_coordinates(district_test.houses)
 
-    # " Showing all the batteries in a seperate plot"
+     # " Showing all the batteries in a seperate plot"
     # for battery in district_test.batteries:
     #
     #     creating_grid_district(x_batteries, y_batteries, x_houses, y_houses)
@@ -103,12 +118,12 @@ if __name__ == "__main__":
             # y_pos = int(item[0][1])
             coordinates = item
             # print(len(coordinates))
-            if len(coordinates) != 2:
+            # if len(coordinates) != 2:
                 # print(coordinates)
-                scatterplot.plot_cables_house(coordinates)
+            scatterplot.plot_cables_house(coordinates)
 
     scatterplot.showing_plot()
     # plot_cables_house(solution.cables)
 
     # " Showing all the plots"
-    # plt.show()
+    # plt.show()

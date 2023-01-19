@@ -1,4 +1,4 @@
-import itertools
+import copy
 
 class Model(object):
     def __init__(self, district):
@@ -9,18 +9,53 @@ class Model(object):
         key is battery and value is a list of lists for every cable route.
         startpoint of list in list is position of house
         """
-        self.battery_cable = {}
-        self.set_with_positions = {}
+        self.battery_cable = self.fill_battery_cable()
+        self.battery_positions = self.fill_battery_positions()
+        self.battery_capacity = self.fill_battery_capacity()
+        self.positive_capacities = True
+
+    def fill_battery_capacity(self):
+        capacities = {}
+        for battery in self.district.batteries:
+            capacities[battery] = battery.capacity
+        return capacities
 
     def fill_battery_cable(self):
+        batteries_cable = {}
         for battery in self.district.batteries:
-            self.battery_cable[battery] = [[[battery.x_position, battery.y_position]]]
+            batteries_cable[battery] = [[[battery.x_position, battery.y_position]]]
+        return batteries_cable
 
-    def fill_set_with_positions(self):
+    def fill_battery_positions(self):
+        battery_positions = {}
         for battery in self.district.batteries:
             list = []
             list.append([battery.x_position, battery.y_position])
-            self.set_with_positions[battery] = list
+            battery_positions[battery] = list
+        return battery_positions
+
+
+    def reduce_capacity(self, battery, house):
+        self.battery_capacity[battery] = self.battery_capacity[battery] - house.maxoutput
+        if self.battery_capacity[battery] < 0:
+            # print("a battery is negative")
+            self.positive_capacities = False
+
+    def increase_capacity(self, battery, house):
+        self.battery_capacity[battery] = self.battery_capacity[battery] + house.maxoutput
+
+    def return_a_house_given_a_position(self, position):
+        for house in self.district.houses:
+            if position[0] == house.x_position and position[1] == house.y_position:
+                return house
+        return False
+
+    def delete_a_route_from_house(self, index, battery, route):
+        ### verwijder posities uit set_with_positions
+        for item in route:
+            self.battery_positions[battery].remove(item)
+        ### verwijder route uit battery_cable
+        self.battery_cable[battery].pop(index)
 
 
     def is_solution(self):
@@ -30,7 +65,9 @@ class Model(object):
         for house in self.district.houses:
             if not self.has_connection(house):
                 return False
-        return True
+        # print(self.positive_capacities)
+        # return self.positive_capacities
+        return self.positive_capacities
 
 
     def get_houses(self):
@@ -65,10 +102,9 @@ class Model(object):
 
             """ battery is None when it was not possible to connect the house to a battery """
             if battery is not None:
-                battery.reduce_capacity(house)
+                self.reduce_capacity(battery, house)
                 self.add_route_from_house_to_battery(battery, house, position)
             self.solution[house] = battery
-            # print(self.set_with_positions)
 
 
     def get_battery_positions(self):
@@ -87,9 +123,10 @@ class Model(object):
         list_batteries = []
         for battery in self.district.batteries:
             # print(battery.capacity)
-            if battery.capacity > house.maxoutput:
+            # if battery.capacity > house.maxoutput:
+            if self.battery_capacity[battery] > house.maxoutput:
                 list_batteries.append(battery)
-                for item in self.set_with_positions[battery]:
+                for item in self.battery_positions[battery]:
                     list_grids.append(item)
         return list_grids, list_batteries
 
@@ -125,13 +162,13 @@ class Model(object):
             for i in range(steps + 1):
                 self.add_cable(house.x_position+i, house.y_position)
                 list.append([house.x_position+i, house.y_position])
-                self.set_with_positions[battery].append([house.x_position+i, house.y_position])
+                self.battery_positions[battery].append([house.x_position+i, house.y_position])
         else:
             steps = house.x_position - position[0]
             for i in range(steps + 1):
                 self.add_cable(house.x_position-i, house.y_position)
                 list.append([house.x_position-i, house.y_position])
-                self.set_with_positions[battery].append([house.x_position-i, house.y_position])
+                self.battery_positions[battery].append([house.x_position-i, house.y_position])
         return list
 
 
@@ -142,25 +179,25 @@ class Model(object):
             for i in range(steps):
                 self.add_cable(position[0], house.y_position + i + 1)
                 list.append([position[0], house.y_position + i + 1])
-                self.set_with_positions[battery].append([position[0], house.y_position + i + 1])
+                self.battery_positions[battery].append([position[0], house.y_position + i + 1])
         else:
             steps = house.y_position - position[1]
             for i in range(steps):
                 self.add_cable(position[0], house.y_position - i - 1)
                 list.append([position[0], house.y_position - i - 1])
-                self.set_with_positions[battery].append([position[0], house.y_position - i - 1])
+                self.battery_positions[battery].append([position[0], house.y_position - i - 1])
         return list
 
 
     def remove_duplicates(self):
-        for key in self.set_with_positions:
-            duplicates = self.set_with_positions[key]
+        for key in self.battery_positions:
+            duplicates = self.battery_positions[key]
             tpls = [tuple(x) for x in duplicates]
             set1 = set(tpls)
             # dct = list(dict.fromkeys(tpls))
             dup_free = [list(x) for x in set1]
             dup_free.sort()
-            self.set_with_positions[key] = dup_free
+            self.battery_positions[key] = dup_free
             # print(dup_free)
 
     def add_route_from_house_to_battery(self, battery, house, position):
@@ -169,3 +206,11 @@ class Model(object):
         list_with_coordinates = self.add_vertical_steps(position, house, list, battery)
         self.remove_duplicates()
         self.connect_battery_to_cable(battery, list_with_coordinates)
+
+    def copy(self):
+        """
+        Copies a model from itself.
+        """
+        new_model = copy.copy(self)
+        new_model.solution = copy.copy(self.solution)
+        return new_model

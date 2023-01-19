@@ -12,8 +12,7 @@ class Battery(object):
 
     def reduce_capacity(self, house):
         self.capacity = self.capacity - house.maxoutput
-        if self.capacity < 0:
-            print("negatief")
+
 
     def __repr__(self):
         """ Let the object be printed properly when its called for """
