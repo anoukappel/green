@@ -10,10 +10,6 @@ class Battery(object):
     def has_capacity(self):
         return self.capacity
 
-    def reduce_capacity(self, house):
-        self.capacity = self.capacity - house.maxoutput
-
-
     def __repr__(self):
         """ Let the object be printed properly when its called for """
         return f"Position battery: ({self.x_position}, {self.y_position}), available capacity: {self.capacity}"

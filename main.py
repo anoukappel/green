@@ -20,60 +20,69 @@ if __name__ == "__main__":
     while model_test.is_solution() is False:
         model_2 = model.Model(district_test)
         model_test = random.random_assignment(model_2)
+
+    print(len(model_test.cables))
+    print(f"totale kosten voor HillClimber: {model_test.get_total_costs()}")
     print("hillclimber is beginning:")
-    hill_algo = hill_algo.HillClimber(model_test)
+    hill_algo = hillclimber.HillClimber(model_test)
+    # hill_algo.switch_random_houses_from_battery()
+    #
+    print("Running the Hill Climber")
+    hill_algo.run_hillclimber(1000, 1)
+    # print(f"totale kosten na HillClimber: {hill_algo.value}")
 
-    # print(model_test.battery_capacity)
-    # print(model_test.is_solution())
-    # solution = hillclimber.HillClimber(model_test)
-    # solution.switch_random_houses_from_battery()
-
-
-    """ dit is visualisatie """
-     """ Random assignment of house to battery, when solution invalid run again. """
-    # model object aanmaken, district object meegeven
-    #list maken van alle sums
-    list_cable_lengths = []
-    first_loop = True
-    # 1000 x random laten lopen
-    number_of_loops = 10000
-    for i in range(number_of_loops):
-        # new_run = False
-
-        model_test = model.Model(district_test)
-        solution = random.random_assignment(model_test)
-        # if solution.is_solution() is True:
-        #     print("True")
-        while solution.is_solution() is False:
-            test = district.District(file)
-            model_2 = model.Model(test)
-            solution = random.random_assignment(model_2)
-
-        if first_loop:
-            smallest_solution = solution
-    # " Totale afstand kabels berekenen"
-        sum = len(solution.cables)
-        list_cable_lengths.append(sum)
-
-        if sum < len(smallest_solution.cables):
-            smallest_solution = solution
-
-        first_loop = False
-    # print(list_cable_lengths)
-        # print(f"Total number of cables needed: {sum}")
-
-    # print(list_cable_lengths)
+    smallest_solution = hill_algo.model
     print(len(smallest_solution.cables))
 
+
+
+    # """ dit is visualisatie """
+    #  """ Random assignment of house to battery, when solution invalid run again. """
+    # model object aanmaken, district object meegeven
+    #list maken van alle sums
+#     list_cable_lengths = []
+#     first_loop = True
+#     # 1000 x random laten lopen
+#     number_of_loops = 10000
+#     for i in range(number_of_loops):
+#         # new_run = False
+#
+#         model_test = model.Model(district_test)
+#         solution = random.random_assignment(model_test)
+#         # if solution.is_solution() is True:
+#         #     print("True")
+#         while solution.is_solution() is False:
+#             test = district.District(file)
+#             model_2 = model.Model(test)
+#             solution = random.random_assignment(model_2)
+#
+#         if first_loop:
+#             smallest_solution = solution
+#     # " Totale afstand kabels berekenen"
+#         sum = len(solution.cables)
+#         list_cable_lengths.append(sum)
+#
+#         if sum < len(smallest_solution.cables):
+#             smallest_solution = solution
+#
+#         first_loop = False
+#     # print(list_cable_lengths)
+#         # print(f"Total number of cables needed: {sum}")
+#
+#     # print(list_cable_lengths)
+#     print(len(smallest_solution.cables))
+#
     # Plotting histogram greedy + random
-    a = np.array(list_cable_lengths)
-    histogram.plotting_histogram(a)
+
+
+    # a = np.array(list_cable_lengths)
+    # histogram.plotting_histogram(a)
 
     # " De plot laat zien dat de kabellengtes berekent met het random algoritme normaal verdeeld is, er zijn geen sterke uitschieters te zien"
     # "In het geval van scheve verdelingen en verdelingen met uitbijters wordt het gemiddelde makkelijk beïnvloed door extreme waarden, waardoor je geen goed beeld krijgt van de centrale tendens."
     # "https://www.scribbr.nl/statistiek/gemiddelde/"
 
-    average = mean(list_cable_lengths)
+    # average = mean(list_cable_lengths)
     # print(f"Average sum of cables using random algorithm is: {average}" )
 
 
@@ -113,17 +122,18 @@ if __name__ == "__main__":
     for key in smallest_solution.battery_cable:
         # print(key)
         for item in smallest_solution.battery_cable[key]:
+
+            # print(item)
             # print(item)
             # x_pos = int(item[0][0])
             # y_pos = int(item[0][1])
+            # print(item)
             coordinates = item
             # print(len(coordinates))
             # if len(coordinates) != 2:
                 # print(coordinates)
             scatterplot.plot_cables_house(coordinates)
+    # plt.show()
 
     scatterplot.showing_plot()
     # plot_cables_house(solution.cables)
-
-    # " Showing all the plots"
-    # plt.show()

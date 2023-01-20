@@ -8,10 +8,6 @@ def random_assignment(model):
     """
     random.shuffle(model.district.houses)
 
-    # model.fill_battery_cable()
-
-    # model.fill_set_with_positions()
-
     for house in model.district.houses:
         ## sets connection between house and closest battery with available capacity
         model.set_connection(house, model.district.batteries)
