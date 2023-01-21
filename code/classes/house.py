@@ -8,10 +8,6 @@ class House(object):
         self.maxoutput = maxoutput
 
 
-    # def get_distance_to_battery(self, battery):cd
-    #     distance = abs(self.x_position - battery.x_position) + abs(self.y_position - battery.y_position)
-    #     return distance
-
     def get_distance_to_battery_or_cable(self, x_position, y_position):
         """
         Calculates manhatten distance between house position and given x and y.
@@ -33,19 +29,6 @@ class House(object):
                 position = item
                 standard = self.get_distance_to_battery_or_cable(item[0],item[1])
         return position
-
-
-    # def get_closest_battery(self, batteries):
-    #     """ returnes battery which is closest to the house """
-    #     standard = 10000
-    #     battery = None
-    #     for item in batteries:
-    #         if self.get_distance_to_battery(item) < standard and (item.capacity - self.maxoutput) > 0:
-    #             battery = item
-    #             standard = self.get_distance_to_battery(item)
-    #             self.distance_to_battery = standard
-    #     return battery
-
 
 
     def __repr__(self):

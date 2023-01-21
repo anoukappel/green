@@ -1,7 +1,7 @@
-import copy
+# import copy
 import random
 
-from .randomise import random_assignment
+from .random import random_assignment
 from code.classes.model import Model
 
 class HillClimber:
@@ -14,75 +14,69 @@ class HillClimber:
             raise Exception("Please provide a complete solution.")
 
         self.model = model.copy()
-        self.value = model.get_total_costs()
+        self.new_model = None
 
-    def switch_random_houses_from_battery(self):
-        """
-        Switch two houses from battery.
-        """
-        ### take two random batteries:
-        random_batteries = random.sample(range(5), 2)
+    def returns_house_to_switch(self, house, battery, new_model):
+        ### bereken capaciteit beschikbaar wanneer house is verwijdert
+        available_capacity = new_model.battery_capacity[battery] + house.maxoutput
+        ### huizen die hieraan verbonden kunnen worden
+        houses_to_switch = []
+        for item in new_model.district.houses:
+            ## check if this house can be connected
+            if item.maxoutput <= available_capacity and new_model.solution[item] != battery:
+                ## check of other house can be connected to this battery
+                possible_battery = new_model.solution[item]
+                if new_model.battery_capacity[possible_battery] + item.maxoutput > house.maxoutput:
+                    houses_to_switch.append(item)
+        if len(houses_to_switch) != 0:
+            return random.choice(houses_to_switch)
+        else:
+            return False
 
-        ### get two houses from different batteries
-            ## choose two random batteries
-        batterij_1 = self.model.district.batteries[random_batteries[0]]
-        batterij_2 = self.model.district.batteries[random_batteries[1]]
-            ## cal number of routes (houses) connected to this battery
-        index_1 = len(self.model.battery_cable[batterij_1])
-        index_2 = len(self.model.battery_cable[batterij_2])
-            ## get random index to select random house (so skip index 0)
-        index_1 = random.randint(1, index_1)
-        index_2 = random.randint(1, index_2)
+    def switch_random_house_and_battery_in_solution(self, new_model):
+        """ picks a random house from a random battery """
+        battery = new_model.district.batteries[random.randint(0, 4)]
+        ## find random house given this battery
+        index = len(new_model.battery_cable[battery])
+        index = random.randint(1, index - 1)
+        route = new_model.battery_cable[battery][index]
+        house = new_model.return_a_house_given_a_position(route[0])
 
-        route_1 = self.model.battery_cable[batterij_1][index_1]
-        route_2 = self.model.battery_cable[batterij_2][index_2]
-            ## find the house objects related to these routes
-        house_1 = self.model.return_a_house_given_a_position(route_1[0])
-        house_2 = self.model.return_a_house_given_a_position(route_2[0])
+        ## find an other random house from other battery to switch
+        if self.returns_house_to_switch(house, battery, new_model) is not False:
+            house_switch = self.returns_house_to_switch(house, battery, new_model)
+            battery_switch = new_model.solution[house_switch]
 
-        ### delete those routes from the list and from set.
-        self.model.delete_a_route_from_house(index_1, batterij_1, route_1)
-        self.model.delete_a_route_from_house(index_2, batterij_2, route_2)
+            ## switch both batterys in solution
+            new_model.solution[house] = battery_switch
+            new_model.solution[house_switch] = battery
 
-        ### add battery capacity to battery where house is deleted from
-        self.model.increase_capacity(batterij_1, house_1)
-        self.model.increase_capacity(batterij_2, house_2)
+            new_sol = new_model.solution
 
-        ### add the both houses to the other battery
-        ## get the list of possible grids
-        list_positions_1 = self.model.battery_positions[batterij_2]
-        list_positions_2 = self.model.battery_positions[batterij_1]
-
-        ### get closest position of other battery for both houses
-        position_1 = house_1.get_closest_battery_or_cable(list_positions_1)
-        position_2 = house_2.get_closest_battery_or_cable(list_positions_2)
-
-        ### battery capacity reduction
-        self.model.reduce_capacity(batterij_1, house_2)
-        self.model.reduce_capacity(batterij_2, house_1)
+            self.fill_solution(new_sol, new_model)
 
 
-        ## add other routes to
-        self.model.add_route_from_house_to_battery(batterij_2, house_1, position_1)
-        self.model.add_route_from_house_to_battery(batterij_1, house_2, position_2)
+    def fill_solution(self, new_sol, new_model):
+        new_model = Model(new_model.district)
+        for house in new_model.district.houses:
+            new_model.set_connection_given_battery(house, new_sol[house])
 
-        # add to solution
-        self.model.solution[house_1] = batterij_2
-        self.model.solution[house_2] = batterij_1
-         # position = house_1.get_closest_battery_or_cable(set_with_positions[batterij_2])
+        self.new_model = new_model
+
 
     def check_solution(self, new_model):
         """
         Check if new solution is an improvement.
         """
-        new_value = new_model.get_total_costs()
-        old_value = self.value
-        if new_model.is_solution()
-            if new_value <= old_value:
-                self.model = new_model
-                self.value = new_value
+        new_value = len(self.new_model.cables)
+        old_value = len(self.model.cables)
+        if new_model.is_solution():
+            if new_value < old_value:
+                print("the model is improved")
+                self.model = self.new_model
 
-    def run_hillclimber(self, iterations):
+
+    def run_hillclimber(self, iterations, number_of_switch):
         """
         Runs the hillclimber algorithm for a number of iterations,
         each time switching one house.
@@ -91,8 +85,6 @@ class HillClimber:
 
         for iteration in range(iterations):
             new_model = self.model.copy()
-
-            self.switch_random_houses_from_battery()
-
+            for i in range(number_of_switch):
+                self.switch_random_house_and_battery_in_solution(new_model)
             self.check_solution(new_model)
-            print(self.value)
