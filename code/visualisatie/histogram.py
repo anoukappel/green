@@ -9,4 +9,5 @@ def plotting_histogram(array_input):
     plt.ylabel('Frequency')
     plt.title('Histogram random + greedy')
     plt.show()
+    plt.close()
     # plt.clear()

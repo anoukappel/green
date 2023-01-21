@@ -1,20 +1,7 @@
-" Lijsten maken om huizen en batterijen in op te slaan voor scatterplot"
 import matplotlib.pyplot as plt
 import numpy as np
 
-def creating_list_for_coordinates(district):
-    x = []
-    y = []
-
-    for item in district:
-        x.append(item.x_position)
-        y.append(item.y_position)
-
-    return x, y
-
-
-" Basis plaatje met alle huizen en batterijen erop afgebeeld van bepaalde wijk"
-def creating_grid_district(x_batteries, y_batteries, x_houses, y_houses):
+def creating_grid_district():
     fig = plt.figure(figsize=(10, 8))
     ax = fig.add_subplot(1, 1, 1)
 
@@ -34,19 +21,10 @@ def creating_grid_district(x_batteries, y_batteries, x_houses, y_houses):
     ax.grid(which='minor', alpha=0.2)
     ax.grid(which='major', alpha=0.5)
 
-    plt.scatter(x_batteries, y_batteries, c ="red",
-                linewidths = 2,
-                marker ="s",
-                s = 80)
+def plot_one_battery(x_battery, y_battery, color):
+    plt.plot(x_battery, y_battery, color = color, marker = 's', markersize = 8)
 
-    plt.scatter(x_houses, y_houses, c ="black",
-                linewidths = 2,
-                        marker ="o",
-                        edgecolor ="black",
-                        s = 60)
-
-
-def plot_cables_house(cables_coordinates):
+def plot_element(cables_coordinates, color, marker = "", linestyle = ""):
     cb_x = []
     cb_y = []
 
@@ -54,8 +32,32 @@ def plot_cables_house(cables_coordinates):
         cb_x.append(cable_point[0])
         cb_y.append(cable_point[1])
 
-    plt.plot(cb_x, cb_y, 'b-')
+    plt.plot(cb_x, cb_y, color = color, marker = marker, linestyle = linestyle)
 
-def showing_plot():
+
+def show_scatterplot(smallest_solution, multiple_plots = True):
+    colors = ['b', 'c', 'g', 'r', 'k', 'm']
+
+    creating_grid_district()
+
+    i = 0
+    # looping through each battery
+    for key in smallest_solution.battery_cable:
+        houses_certain_battery = []
+        plot_one_battery(key.x_position, key.y_position, colors[i])
+        # looping trough al cable coordinates connected to battery
+        for item in smallest_solution.battery_cable[key]:
+            houses_certain_battery.append(item[0])
+            coordinates_cables= item
+            # plotting the cables
+            plot_element(coordinates_cables, color = 'b', linestyle = '-')
+
+        # plotting the houses in color
+        plot_element(houses_certain_battery, colors[i], marker = 'o')
+        i = i + 1
+        # creating seperate plots for each battery if condition is true
+        if multiple_plots and i < 5:
+            creating_grid_district()
+
     plt.show()
-    # plt.clear()
+    plt.close()
