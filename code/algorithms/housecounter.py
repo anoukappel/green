@@ -6,6 +6,7 @@ class Housecounter:
     def __init__(self, model):
         self.model = model
         self.blocks = {}
+        self.houses_left = []
 
     def fill_blocks(self):
         for i in range(25):
@@ -30,19 +31,64 @@ class Housecounter:
                         break
             else:
                 counter += 5
-            # break
 
-    # housecount = housecounter.Housecounter(model_2)
-    # housecount.fill_blocks()
-    # print(housecount.blocks)
+    def largest_block(self):
+        large = 0
+        block_with_most_houses = None
+        for i in range(25):
+            if len(self.blocks[i]) > large:
+                large = len(self.blocks[i])
+                block_with_most_houses = i
+        return block_with_most_houses
 
 
-    #         self.blocks.append(self.house)
-    #         print(f"Lijst: {self.blocks}")
+    def connect_block_with_battery(self):
+        block = self.largest_block()
+        position, list_batteries = self.model.get_closest_position(self.blocks[block][0])
+        # random.shuffle(self.blocks[block])
+        for house in self.blocks[block]:
+            if self.model.set_connection_block_given_battery(house, position, list_batteries) == False:
+                self.houses_left.append(house)
+        self.blocks[block] = []
+
+
+    def connect_left_over_houses(self):
+        if self.houses_left != []:
+            random.shuffle(self.houses_left)
+            for house in self.houses_left:
+                self.model.set_connection(house, self.houses_left)
+
+
+    def connect_all_blocks(self):
+        for i in range(25):
+            self.connect_block_with_battery()
+        self.connect_left_over_houses()
+
+    # def run(self):
+    #     list_cable_lengths = []
+    #     solution = self.connect_all_blocks()
+    #     sum = len(self.model.cables)
+    #     list_cable_lengths.append(sum)
+    #     return solution, list_cable_lengths
+
+    # def run(self, amount_valid_solutions, district_test):
     #
-    # housecount = housecounter.Housecounter(house)
-    # housecount.houses_in_block()
-
-    # for i in model.district.house:
-    #     print(f"Nieuw huis{model.district.houses[0]}")
-    #     print(f"ander huis{model.district.houses[1]}")
+    #     list_cable_lengths = []
+    #     first_loop = True
+    #     while (len(list_cable_lengths) != amount_valid_solutions):
+    #         model_test = Model(district_test)
+    #         solution = self.connect_all_blocks()
+    #
+    #         sum = len(solution.cables)
+    #
+    #         if solution.is_solution() is not False:
+    #             list_cable_lengths.append(sum)
+    #
+    #         if first_loop:
+    #             smallest_solution = solution
+    #
+    #         if sum < len(smallest_solution.cables):
+    #             smallest_solution = solution
+    #
+    #         first_loop = False
+    #     return smallest_solution, list_cable_lengths

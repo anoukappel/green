@@ -103,6 +103,37 @@ class Model(object):
         self.add_route_from_house_to_battery(battery, house_position, position)
         self.solution[house] = battery
 
+    def set_connection_block_given_battery(self, house, position, list_batteries):
+            battery = None
+            for key in list_batteries:
+                for list in self.battery_cable[key]:
+                    for item in list:
+                        if item == position:
+                            battery = key
+                            break
+
+            if self.check_capicity(house, battery) == False:
+                return False
+
+            elif battery is not None:
+                self.reduce_capacity(battery, house)
+                house_position = [house.x_position, house.y_position]
+                self.add_route_from_house_to_battery(battery, house_position, position)
+                self.solution[house] = battery
+                return True
+
+
+    def get_closest_position(self, house):
+        if self.get_available_batteries(house) != []:
+            list_grids, list_batteries = self.get_available_batteries(house)
+            position = house.get_closest_battery_or_cable(list_grids)
+            return position, list_batteries
+
+    def check_capicity(self, house, battery):
+        check = False
+        if self.battery_capacity[battery] > house.maxoutput:
+            check = True
+        return check
 
     def get_battery_positions(self):
         """
