@@ -92,3 +92,9 @@ class Housecounter:
     #
     #         first_loop = False
     #     return smallest_solution, list_cable_lengths
+
+
+# model_test = model.Model(district_test)
+# housecount = housecounter.Housecounter(model_test)
+# housecount.fill_blocks()
+# housecount.connect_all_blocks()
