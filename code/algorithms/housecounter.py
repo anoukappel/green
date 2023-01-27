@@ -63,6 +63,7 @@ class Housecounter:
         for i in range(25):
             self.connect_block_with_battery()
         self.connect_left_over_houses()
+        return self.model
 
     # def run(self):
     #     list_cable_lengths = []
