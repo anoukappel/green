@@ -11,6 +11,16 @@ class Model(object):
         self.battery_capacity = self.fill_battery_capacity()
         self.positive_capacities = True
 
+    def return_total_costs(self):
+        """ returns the total costs of batteries and cables """
+        battery_costs = 5000 * len(self.district.batteries)
+        cable_costs = 0
+        for battery in self.district.batteries:
+            [cable_costs := cable_costs + len(x) - 1 for x in self.battery_cable[battery]]
+        cable_costs = cable_costs * 9
+        return cable_costs + battery_costs
+
+
     def fill_battery_capacity(self):
         capacities = {}
         for battery in self.district.batteries:
@@ -33,6 +43,7 @@ class Model(object):
 
 
     def reduce_capacity(self, battery, house):
+        """ Reduce a batteries capacity with the given maxoutput of the house."""
         self.battery_capacity[battery] = self.battery_capacity[battery] - house.maxoutput
         if self.battery_capacity[battery] < 0:
             self.positive_capacities = False
@@ -156,13 +167,6 @@ class Model(object):
                     list_grids.append(item)
         return list_grids, list_batteries
 
-
-    def get_total_costs(self):
-        """
-        Returns total costs
-        """
-        if self.is_solution:
-            return len(self.cables) * 9 + len(self.district.batteries) * 5000
 
     def add_cable(self, x_position, y_position):
         """

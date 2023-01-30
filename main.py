@@ -1,5 +1,5 @@
 from code.classes import battery, district, house, model
-from code.algorithms import random
+from code.algorithms import random, hillclimber
 from code.solutions import save_solution
 from code.visualisatie import histogram, scatterplot
 
@@ -8,7 +8,6 @@ from statistics import mean
 import matplotlib.pyplot as plt
 import numpy as np
 
-from code.algorithms import greedy
 
 if __name__ == "__main__":
     """ creation of district object """
@@ -16,20 +15,20 @@ if __name__ == "__main__":
     # object district aanmaken bestaande uit batteries en huizen data
     district_test = district.District(file)
 
-    smallest_solution, list_cable_lengths = random.run(10, district_test)
-
-    # print(len(smallest_solution.cables))
-
-    # Plotting histogram greedy + random
-    histogram.plotting_histogram(list_cable_lengths)
-
-    # average = mean(list_cable_lengths)
-    # print(f"Average sum of cables using random + greedy algorithm is: {average}" )
-
-    # Showing plot of all batteries
-    scatterplot.show_scatterplot(smallest_solution, multiple_plots = False)
-    # Showing a plot of each battery
-    scatterplot.show_scatterplot(smallest_solution)
+    #smallest_solution, list_cable_lengths = random.run(10, district_test)
+    #
+    # # print(len(smallest_solution.cables))
+    #
+    # # Plotting histogram greedy + random
+    # histogram.plotting_histogram(list_cable_lengths)
+    #
+    # # average = mean(list_cable_lengths)
+    # # print(f"Average sum of cables using random + greedy algorithm is: {average}" )
+    #
+    # # Showing plot of all batteries
+    # scatterplot.show_scatterplot(smallest_solution, multiple_plots = False)
+    # # Showing a plot of each battery
+    # scatterplot.show_scatterplot(smallest_solution)
 
     """ Hillclimber algortihm """
     model_test = model.Model(district_test)
@@ -39,7 +38,7 @@ if __name__ == "__main__":
         model_test = random.random_assignment(model_2)
 
     print(len(model_test.cables))
-    print(f"totale kosten voor HillClimber: {model_test.get_total_costs()}")
+    print(f"totale kosten voor HillClimber: {model_test.return_total_costs()}")
     print("hillclimber is beginning:")
     hill_algo = hillclimber.HillClimber(model_test)
     # hill_algo.switch_random_houses_from_battery()
@@ -49,4 +48,5 @@ if __name__ == "__main__":
     # print(f"totale kosten na HillClimber: {hill_algo.value}")
 
     smallest_solution = hill_algo.model
+    print(f"Total costs are: {smallest_solution.return_total_costs()}")
     # print(len(smallest_solution.cables))

@@ -1,4 +1,3 @@
-# import copy
 import random
 
 from .random import random_assignment
@@ -17,9 +16,11 @@ class HillClimber:
         self.new_model = None
 
     def returns_house_to_switch(self, house, battery, new_model):
-        ### bereken capaciteit beschikbaar wanneer house is verwijdert
+        """ returns a house which is suitable to switch given another house connected
+            to a certain battery. Making sure there is enough capacity to switch. """
+        # calculate capacity of battery when house is deleted
         available_capacity = new_model.battery_capacity[battery] + house.maxoutput
-        ### huizen die hieraan verbonden kunnen worden
+
         houses_to_switch = []
         for item in new_model.district.houses:
             ## check if this house can be connected
@@ -36,18 +37,18 @@ class HillClimber:
     def switch_random_house_and_battery_in_solution(self, new_model):
         """ picks a random house from a random battery """
         battery = new_model.district.batteries[random.randint(0, 4)]
-        ## find random house given this battery
+        # find random house given this battery
         index = len(new_model.battery_cable[battery])
         index = random.randint(1, index - 1)
         route = new_model.battery_cable[battery][index]
         house = new_model.return_a_house_given_a_position(route[0])
 
-        ## find an other random house from other battery to switch
+        # find an other random house from other battery to switch
         if self.returns_house_to_switch(house, battery, new_model) is not False:
             house_switch = self.returns_house_to_switch(house, battery, new_model)
             battery_switch = new_model.solution[house_switch]
 
-            ## switch both batterys in solution
+            # switch both batterys in solution
             new_model.solution[house] = battery_switch
             new_model.solution[house_switch] = battery
 
@@ -57,6 +58,8 @@ class HillClimber:
 
 
     def fill_solution(self, new_sol, new_model):
+        """ creates a new solution, given the solution. So every house has assigned
+            battery beforehand. """
         new_model = Model(new_model.district)
         for house in new_model.district.houses:
             new_model.set_connection_given_battery(house, new_sol[house])
@@ -72,7 +75,7 @@ class HillClimber:
         old_value = len(self.model.cables)
         if new_model.is_solution():
             if new_value < old_value:
-                print("the model is improved")
+                # print("the model is improved")
                 self.model = self.new_model
 
 
