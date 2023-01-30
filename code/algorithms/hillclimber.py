@@ -75,7 +75,7 @@ class HillClimber:
         old_value = len(self.model.cables)
         if new_model.is_solution():
             if new_value < old_value:
-                print("the model is improved")
+                # print("the model is improved")
                 self.model = self.new_model
 
 
