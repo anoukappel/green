@@ -3,14 +3,32 @@ from code.classes.district import District
 import random
 
 class Housecounter:
+    """
+    The Housecounter class counts the number of houses in each 10x10 grid block.
+    It connects all the houses of a block to the closest battery.
+    If a house can't connect it will go into a list. Which will be connected
+    afterwards.
+    The block with the most houses will be connected first and with the least
+    houses last.
+    """
     def __init__(self, model):
         self.model = model
         self.blocks = {}
         self.houses_left = []
 
-    def fill_blocks(self):
+    def make_blocks(self):
+        """
+        Makes 25 list in a dictionairy. With a number of a block as key.
+        Block 0 is in the bottom left side and block 24 in the upper right side.
+        """
         for i in range(25):
             self.blocks[i] = []
+
+    def fill_blocks(self):
+        """
+        Fills the list in the dictionairy with houses present in that block
+        """
+        self.make_blocks()
         for house in self.model.district.houses:
             for i in range(25):
                 if self.houses_in_block(house) == i:
