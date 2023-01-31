@@ -16,25 +16,25 @@ def random_assignment(model):
 
 def run(amount_valid_solutions, district_test):
 
-    list_cable_lengths = []
+    costs = []
     first_loop = True
-    while (len(list_cable_lengths) != amount_valid_solutions):
+    while (len(costs) != amount_valid_solutions):
         model_test = Model(district_test)
         solution = random_assignment(model_test)
 
-        sum = len(solution.cables)
+        sum = solution.return_total_costs()
 
         if solution.is_solution() is False:
             continue
 
         if solution.is_solution() is not False:
-            list_cable_lengths.append(sum)
+            costs.append(sum)
 
         if first_loop:
             smallest_solution = solution
 
-        if sum < len(smallest_solution.cables):
+        if sum < smallest_solution.return_total_costs():
             smallest_solution = solution
 
         first_loop = False
-    return smallest_solution, list_cable_lengths
+    return smallest_solution, costs
