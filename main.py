@@ -44,7 +44,8 @@ if __name__ == "__main__":
 
     """ Hillclimber algortihm """
     # hillclimber_experiment.hillclimb(district_test)
-    hillclimber_experiment.multiple_runs(district_test, 10, 1, 600)
+    # hillclimber_experiment.multiple_runs(district_test, 1, 1, 500)
+    hillclimber_experiment.house_counter_hillclimb(district_test, 10,  1, 1000)
 
 
     # list_costs = []
