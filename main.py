@@ -4,7 +4,7 @@ from code.solutions import save_solution
 from code.visualisatie import histogram, scatterplot
 from code.experiments.random_experiment import random_experiment
 from code.experiments.hillclimber_experiment import hillclimber_experiment
-
+from code.experiments.simulated_annealing import simulatedannealing_experiment
 
 from statistics import mean
 
@@ -23,24 +23,29 @@ if __name__ == "__main__":
 
 
     """ Hillclimber algortihm """
-    # hillclimber_experiment.hillclimb(district_test)
-    hillclimber_experiment.multiple_runs(district_test, 1, 1, 1000)
-    # hillclimber_experiment.house_counter_hillclimb(district_test, 1,  1, 1000)
+    # parameters used in the hillclimber, if changed and algorithm is runned again than new plots will be saved
+    # number_of_runs = 10
+    # houses_to_switch = 1
+    # iterations = 1000
+    # random_runs = 10
+
+    # # running the algorithm
+    # hillclimber_experiment.multiple_runs(district_test, number_of_runs, houses_to_switch, iterations, random_runs)
+    # hillclimber_experiment.house_counter_hillclimb(district_test, number_of_runs,  houses_to_switch, iterations)
 
     """ housecounter algoritme """
 
     """ simulated annealing """
+    # parameters used in simulated annealing algorithm, if changed and algorithm is runned again than new plots will be saved
+    number_of_runs = 1
+    houses_to_switch = 1
+    iterations = 1000
+    start_temp = 50
+    raise_temp = 20
+    random_runs = 10
 
+    # run the algorithm using house_counter solution as a starting point
+    simulatedannealing_experiment.house_counter_simulated_an(district_test, number_of_runs, houses_to_switch, iterations, start_temp, raise_temp)
 
-
-
-
-    # plt.plot(range(1101), smallest_model.values)
-    # plt.show()
-
-    # histogram.plotting_histogram(list_costs)
-    # scatterplot.show_scatterplot(smallest_solution, multiple_plots = False)
-    # print(len(smallest_solution.cables))
-    # print(smallest_solution.return_total_costs())
-
-    # print(len(smallest_solution.cables))
+    # run the algorithm using the best of a number of random solutions as a starting point
+    simulatedannealing_experiment.house_counter_simulated_an(district_test, number_of_runs, houses_to_switch, iterations, start_temp, raise_temp)

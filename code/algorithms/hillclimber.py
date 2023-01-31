@@ -17,16 +17,18 @@ class HillClimber:
         self.values = [int(model.return_total_costs())]
 
     def returns_house_to_switch(self, house, battery, new_model):
-        """ returns a house which is suitable to switch given another house connected
-            to a certain battery. Making sure there is enough capacity to switch. """
-        # calculate capacity of battery when house is deleted
+        """
+        Returns a house which is suitable to switch given another house connected
+        to a certain battery. Making sure there is enough capacity to switch.
+        """
+        # calculate capacity of battery where the house will be deleted from
         available_capacity = new_model.battery_capacity[battery] + house.maxoutput
 
         houses_to_switch = []
         for item in new_model.district.houses:
-            ## check if this house can be connected
+            # check if this house can be connected
             if item.maxoutput <= available_capacity and new_model.solution[item] != battery:
-                ## check of other house can be connected to this battery
+                # check of other house can be connected to this battery
                 possible_battery = new_model.solution[item]
                 if new_model.battery_capacity[possible_battery] + item.maxoutput > house.maxoutput:
                     houses_to_switch.append(item)
@@ -36,7 +38,9 @@ class HillClimber:
             return False
 
     def switch_random_house_and_battery_in_solution(self, new_model):
-        """ picks a random house from a random battery """
+        """
+        Switches two houses from battery in model.solution and creates a new model with this.
+        """
         battery = new_model.district.batteries[random.randint(0, 4)]
         # find random house given this battery
         index = len(new_model.battery_cable[battery])
@@ -59,8 +63,10 @@ class HillClimber:
 
 
     def fill_solution(self, new_sol, new_model):
-        """ creates a new solution, given the solution. So every house has assigned
-            battery beforehand. """
+        """
+        Creates a new solution, given the solution. So every house has assigned
+        battery beforehand.
+        """
         new_model = Model(new_model.district)
         for house in new_model.district.houses:
             new_model.set_connection_given_battery(house, new_sol[house])
@@ -70,18 +76,18 @@ class HillClimber:
 
     def check_solution(self, new_model):
         """
-        Check if new solution is an improvement.
+        Check if new solution is an improvement, if True save the new_model as the model so that in
+        the next iteration the solution is compared to the new model.
         """
         new_value = len(self.new_model.cables)
         old_value = len(self.model.cables)
         if new_model.is_solution():
             if new_value < old_value:
-                # print("the model is improved")
                 self.model = self.new_model
         self.values.append(int(self.model.return_total_costs()))
 
 
-    def run_hillclimber(self, iterations, number_of_switch):
+    def run(self, iterations, number_of_switch):
         """
         Runs the hillclimber algorithm for a number of iterations,
         each time switching one house.
