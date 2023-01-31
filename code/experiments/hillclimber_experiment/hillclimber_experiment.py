@@ -42,7 +42,12 @@ def house_counter_hillclimb(district, runs, number_of_switch, iterations):
             optimal_model = best_model
             cost = costs
 
-    histogram.plotting_histogram(cost)
+    # histogram.plotting_histogram(cost)
+    # save_solution.save(f"hillclimber_experiment/house_counter_runs_{runs}_iterations_{iterations}.json", optimal_model)
+
+    plt.plot(range(iterations +1), cost)
+    plt.savefig(f"code/experiments/hillclimber_experiment/house_counter_runs_{runs}_iterations_{iterations}")
+
 
 
 
@@ -56,16 +61,9 @@ def multiple_runs(district, runs, number_of_switch, iterations):
             optimal_model = best_model
             cost = costs
 
-    histogram.plotting_histogram(cost)
-
-
-
-
-
-def saving_plots(district):
-
-    best_model, costs = hillclimber(district)
-
-    # histogram
-
-    # plaatje grid
+    # histogram.plotting_histogram(cost)
+    plt.plot(range(iterations +1), cost)
+    plt.xlabel("Iterations")
+    plt.ylabel("Total costs")
+    plt.title(f"Best solution of hillclimber in combination with random + greedy.")
+    plt.savefig(f"code/experiments/hillclimber_experiment/random_runs_{runs}_iterations_{iterations}")
