@@ -50,6 +50,6 @@ def save(filename, solution):
     ]
     create_battery_dict(solution, output)
     jsonString = json.dumps(output, indent=4)
-    jsonFile = open(f"code/experiments/{filename}", "w")
+    jsonFile = open(f"code/experiments/{filename}.json", "w")
     jsonFile.write(jsonString)
     jsonFile.close()

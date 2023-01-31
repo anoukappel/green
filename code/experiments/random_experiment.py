@@ -37,7 +37,7 @@ def baseline(district):
 
 
 
-    save_solution.save("random_sol", best_model)
+    save_solution.save("random", best_model)
     print(results)
     # print(test)
 
