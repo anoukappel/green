@@ -14,6 +14,7 @@ class HillClimber:
 
         self.model = model.copy()
         self.new_model = None
+        self.values = [int(model.return_total_costs())]
 
     def returns_house_to_switch(self, house, battery, new_model):
         """ returns a house which is suitable to switch given another house connected
@@ -77,6 +78,7 @@ class HillClimber:
             if new_value < old_value:
                 # print("the model is improved")
                 self.model = self.new_model
+        self.values.append(int(self.model.return_total_costs()))
 
 
     def run_hillclimber(self, iterations, number_of_switch):
