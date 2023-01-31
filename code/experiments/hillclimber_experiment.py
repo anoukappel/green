@@ -55,7 +55,7 @@ def multiple_runs(district, runs, number_of_switch, iterations):
             start_cost = best_model.return_total_costs()
             optimal_model = best_model
             cost = costs
-            
+
     histogram.plotting_histogram(cost)
 
 

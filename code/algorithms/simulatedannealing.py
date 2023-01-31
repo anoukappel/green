@@ -38,14 +38,12 @@ class SimulatedAnnealing(HillClimber):
 
     def check_solution(self, new_model):
         self.new_value = len(self.new_model.cables)
-        # print(f"New: {new_value}")
+
         self.old_value = len(self.model_temp.cables)
-        # print(f"Old: {old_value}")
+
 
         try:
             probability = math.exp(-(self.new_value - self.old_value) / self.t_now)
-            # print(f"temp2: {self.t_now}")
-            # print(f"Kans: {probability}")
 
             if self.new_model.is_solution():
                 if random.random() < probability:
@@ -55,9 +53,10 @@ class SimulatedAnnealing(HillClimber):
                         self.best_model = self.model_temp
                     # print("the model is changed")
                     # print(self.new_value)
-                    self.y.append(self.new_value)
+                    self.y.append(int(self.model_temp.return_total_costs()))
+                    counter = 0
                 else:
-                    self.y.append(self.old_value)
+                    self.y.append(int(self.model_temp.return_total_costs()))
                     self.counter += 1
                 self.check_temp()
                 self.calculate_temp()

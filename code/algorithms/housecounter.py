@@ -11,6 +11,8 @@ class Housecounter:
     The block with the most houses will be connected first and with the least
     houses last.
     """
+
+
     def __init__(self, model):
         self.model = model
         self.blocks = {}
@@ -29,19 +31,23 @@ class Housecounter:
         Fills the list in the dictionairy with houses present in that block.
         """
         self.make_blocks()
+        # loop through all houses in the district
         for house in self.model.district.houses:
             for i in range(25):
+                # if house is in this block, append house to this block
                 if self.houses_in_block(house) == i:
                     self.blocks[i].append(house)
 
 
     def houses_in_block(self, house):
+        """
+        Checks in which block a house is.
+        """
         counter = -1
+        # looks from bottom to top if the house is in a particular row
         for i in range(10, 51, 10):
-            # print(f"Dit is i: {i}{counter}")
-            # counter += 1
             if house.y_position <= i:
-                # print(f"True and {house}")
+                # looks from left to right if the house is in a particular column
                 for j in range(10, 51, 10):
                     counter += 1
                     if house.x_position <= j:
@@ -91,33 +97,3 @@ class Housecounter:
             self.connect_block_with_battery()
         self.connect_left_over_houses()
         return self.model
-
-
-
-    # def run(self, amount_valid_solutions, district_test):
-    #
-    #     list_cable_lengths = []
-    #     first_loop = True
-    #     while (len(list_cable_lengths) != amount_valid_solutions):
-    #         model_test = Model(district_test)
-    #         solution = self.connect_all_blocks()
-    #
-    #         sum = len(solution.cables)
-    #
-    #         if solution.is_solution() is not False:
-    #             list_cable_lengths.append(sum)
-    #
-    #         if first_loop:
-    #             smallest_solution = solution
-    #
-    #         if sum < len(smallest_solution.cables):
-    #             smallest_solution = solution
-    #
-    #         first_loop = False
-    #     return smallest_solution, list_cable_lengths
-
-
-# model_test = model.Model(district_test)
-# housecount = housecounter.Housecounter(model_test)
-# housecount.fill_blocks()
-# housecount.connect_all_blocks()
