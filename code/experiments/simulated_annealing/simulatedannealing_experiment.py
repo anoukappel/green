@@ -63,7 +63,7 @@ def random_simulated_an(district, random_runs, runs, number_of_switch, iteration
 def saving_plots(runs, cost, letters, start_temp, raise_temp):
 
     histogram.plotting_histogram(cost)
-    plt.savefig(f'hist: {letters}, start_temp: {start_temp}, raise_temp: {raise_temp}.jpg')
+    plt.savefig(f'hist:{letters}, start_temp:{start_temp}, raise_temp:{raise_temp}.jpg')
     plt.show()
 
     # plt.plot(range(runs), sa.values)

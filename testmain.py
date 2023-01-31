@@ -83,7 +83,7 @@ if __name__ == "__main__":
     #     smallest_solution, list_cable_length = random.run(1, district_test)
     print("run SA")
     sa = simulatedannealing.SimulatedAnnealing(smallest_solution, 10, 20)
-    sa.run_hillclimber(5000, 1)
+    sa.run_hillclimber(10000, 1)
     best_model = sa.best_model
     best_costs = best_model.return_total_costs()
     print(best_costs)
@@ -96,6 +96,6 @@ if __name__ == "__main__":
 
 
     #
-    plt.plot(range(5000), sa.values)
+    plt.plot(range(10000), sa.values)
     # plt.savefig('RG, 500, 1000 (10b).jpg')
     plt.show()
