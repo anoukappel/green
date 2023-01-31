@@ -26,7 +26,7 @@ class Housecounter:
 
     def fill_blocks(self):
         """
-        Fills the list in the dictionairy with houses present in that block
+        Fills the list in the dictionairy with houses present in that block.
         """
         self.make_blocks()
         for house in self.model.district.houses:
@@ -62,11 +62,19 @@ class Housecounter:
 
     def connect_block_with_battery(self):
         block = self.largest_block()
-        position, list_batteries = self.model.get_closest_position(self.blocks[block][0])
-        # random.shuffle(self.blocks[block])
-        for house in self.blocks[block]:
-            if self.model.set_connection_block_given_battery(house, position, list_batteries) == False:
-                self.houses_left.append(house)
+        for i in range(len(self.blocks[block])):
+            position, list_batteries = self.model.get_closest_position(self.blocks[block][0])
+            smallest_distance = 10000
+            for house in self.blocks[block]:
+                distance = self.model.get_distance(house, position)
+                if smallest_distance > distance:
+                    smallest_distance = distance
+                    closest_house = house
+            list = self.blocks[block]
+            list.remove(closest_house)
+            self.blocks[block] = list
+            if self.model.set_connection_block_given_battery(closest_house, position, list_batteries) == False:
+                self.houses_left.append(closest_house)
         self.blocks[block] = []
 
 
@@ -77,18 +85,14 @@ class Housecounter:
                 self.model.set_connection(house, self.houses_left)
 
 
-    def connect_all_blocks(self):
+    def run_housecounter(self):
+        self.fill_blocks()
         for i in range(25):
             self.connect_block_with_battery()
         self.connect_left_over_houses()
         return self.model
 
-    # def run(self):
-    #     list_cable_lengths = []
-    #     solution = self.connect_all_blocks()
-    #     sum = len(self.model.cables)
-    #     list_cable_lengths.append(sum)
-    #     return solution, list_cable_lengths
+
 
     # def run(self, amount_valid_solutions, district_test):
     #

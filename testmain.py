@@ -10,6 +10,9 @@ import numpy as np
 
 from code.algorithms import hillclimber, simulatedannealing, housecounter
 
+import subprocess
+import time
+
 if __name__ == "__main__":
     """ creation of district object """
     file = "data/Huizen&Batterijen/district_1"
@@ -36,20 +39,32 @@ if __name__ == "__main__":
     """ Hillclimber algortihm """
     # model_test = model.Model(district_test)
     #
+
     smallest_solution = model.Model(district_test)
     while smallest_solution.is_solution() is False:
         # smallest_solution, list_cable_lengths = random.run(10, district_test)
-
+    # list_cable_lengths = []
         housecount = housecounter.Housecounter(smallest_solution)
-        housecount.fill_blocks()
-        smallest_solution = housecount.connect_all_blocks()
+    #     # housecount.fill_blocks()
+        smallest_solution = housecount.run_housecounter()
+
+    # for i in range(50):
+    #     housecount.fill_blocks()
+    #     smallest_solution = housecount.connect_all_blocks()
+    #     # if smallest_solution.is_solution() == True:
+    #     best_costs = smallest_solution.return_total_costs()
+    #     list_cable_lengths.append(best_costs)
+    # print(list_cable_lengths)
+
+
+            # smallest_solution = random.random_assignment(smallest_solution)
 
     # scatterplot.show_scatterplot(smallest_solution, multiple_plots = False)
     # Showing a plot of each battery
     # scatterplot.show_scatterplot(smallest_solution)
         # model_2 = model.Model(district_test)
         # model_test = random.random_assignment(model_2)
-    print(len(smallest_solution.cables))
+    # print(len(smallest_solution.cables))
 
     # print(len(model_test.cables))
     # print(f"totale kosten voor HillClimber: {model_test.get_total_costs()}")
@@ -57,27 +72,30 @@ if __name__ == "__main__":
     # hill_algo = hillclimber.HillClimber(model_test)
     # hill_algo.switch_random_houses_from_battery()
     #
-    list_cable_lengths = []
-    for i in range(10):
-        print("run SA")
-        sa = simulatedannealing.SimulatedAnnealing(smallest_solution, 50)
-        sa.run_hillclimber(1000, 1)
-        best_value = sa.old_value
-        list_cable_lengths.append(best_value)
 
-    histogram.plotting_histogram(list_cable_lengths)
+    # start = time.time()
+    # n_runs = 0
+    #
+    # while time.time() - start < 120:
+    # list_cable_lengths = []
+    # for i in range(10):
+    # while smallest_solution.is_solution() is False:
+    #     smallest_solution, list_cable_length = random.run(1, district_test)
+    print("run SA")
+    sa = simulatedannealing.SimulatedAnnealing(smallest_solution, 10)
+    sa.run_hillclimber(100, 1)
+    best_model = sa.best_model
+    best_costs = best_model.return_total_costs()
+    print(best_costs)
+    print(sa.lowest_value)
+    # list_cable_lengths.append(best_costs)
+
+    # histogram.plotting_histogram(list_cable_lengths)
+
+
+
 
     #
-    # plt.plot(sa.x, sa.y)
+    # plt.plot(range(100), sa.y)
     # plt.show()
-    # #
-    # scatterplot.show_scatterplot(sa.model_temp, multiple_plots = False)
-    # Showing a plot of each battery
-    # scatterplot.show_scatterplot(sa.model_temp)
-
-    # print("Running the Hill Climber")
-    # hill_algo.run_hillclimber(1000, 1)
-    # print(f"totale kosten na HillClimber: {hill_algo.value}")
-
-    # smallest_solution = hill_algo.model
-    # print(len(smallest_solution.cables))
+    # plt.savefig('RG, 500, 1000 (10b).jpg')

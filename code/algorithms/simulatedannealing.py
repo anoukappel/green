@@ -10,11 +10,12 @@ class SimulatedAnnealing(HillClimber):
         # self.t_begin = temperature
         self.model_temp = model
         self.t_now = temperature
-        self.x = []
         self.y = []
         self.counter = 0
         self.new_value = 0
         self.old_value = len(self.model_temp.cables)
+        self.lowest_value = 100000
+        self.best_model = None
 
 
 
@@ -28,6 +29,12 @@ class SimulatedAnnealing(HillClimber):
         # beta = 0.01
         # self.t_now = (self.t_now/ (1 + beta * self.t_now))
 
+    def check_temp(self):
+        if self.counter == 200:
+            print(self.t_now)
+            self.t_now = 10
+            self.counter = 0
+
 
     def check_solution(self, new_model):
         self.new_value = len(self.new_model.cables)
@@ -39,17 +46,20 @@ class SimulatedAnnealing(HillClimber):
             probability = math.exp(-(self.new_value - self.old_value) / self.t_now)
             # print(f"temp2: {self.t_now}")
             # print(f"Kans: {probability}")
-            self.counter += 1
 
             if self.new_model.is_solution():
-                self.x.append(self.counter)
                 if random.random() < probability:
                     self.model_temp = self.new_model
+                    if len(self.model_temp.cables) < self.lowest_value:
+                        self.lowest_value = len(self.model_temp.cables)
+                        self.best_model = self.model_temp
                     # print("the model is changed")
                     # print(self.new_value)
                     self.y.append(self.new_value)
                 else:
                     self.y.append(self.old_value)
+                    self.counter += 1
+                self.check_temp()
                 self.calculate_temp()
 
         except OverflowError:

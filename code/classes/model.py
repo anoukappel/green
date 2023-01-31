@@ -140,6 +140,15 @@ class Model(object):
             position = house.get_closest_battery_or_cable(list_grids)
             return position, list_batteries
 
+    def get_distance(self, house, position):
+        # if self.get_available_batteries(house) != []:
+        #     list_grids, list_batteries = self.get_available_batteries(house)
+        #     position = house.get_closest_battery_or_cable(list_grids)
+        #     print(list_grids)
+        #     print(position)
+            distance = house.get_distance_to_battery_or_cable(position[0], position[1])
+            return distance
+
     def check_capicity(self, house, battery):
         check = False
         if self.battery_capacity[battery] > house.maxoutput:
