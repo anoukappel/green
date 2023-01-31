@@ -13,6 +13,8 @@ class SimulatedAnnealing(HillClimber):
         self.x = []
         self.y = []
         self.counter = 0
+        self.new_value = 0
+        self.old_value = len(self.model_temp.cables)
 
 
 
@@ -28,26 +30,26 @@ class SimulatedAnnealing(HillClimber):
 
 
     def check_solution(self, new_model):
-        new_value = len(self.new_model.cables)
-        print(f"New: {new_value}")
-        old_value = len(self.model_temp.cables)
-        print(f"Old: {old_value}")
+        self.new_value = len(self.new_model.cables)
+        # print(f"New: {new_value}")
+        self.old_value = len(self.model_temp.cables)
+        # print(f"Old: {old_value}")
 
         try:
-            probability = math.exp(-(new_value - old_value) / self.t_now)
-            print(f"temp2: {self.t_now}")
-            print(f"Kans: {probability}")
+            probability = math.exp(-(self.new_value - self.old_value) / self.t_now)
+            # print(f"temp2: {self.t_now}")
+            # print(f"Kans: {probability}")
             self.counter += 1
 
             if self.new_model.is_solution():
                 self.x.append(self.counter)
                 if random.random() < probability:
                     self.model_temp = self.new_model
-                    print("the model is changed")
-                    print(new_value)
-                    self.y.append(new_value)
+                    # print("the model is changed")
+                    # print(self.new_value)
+                    self.y.append(self.new_value)
                 else:
-                    self.y.append(old_value)
+                    self.y.append(self.old_value)
                 self.calculate_temp()
 
         except OverflowError:

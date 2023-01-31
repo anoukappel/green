@@ -44,7 +44,7 @@ if __name__ == "__main__":
         housecount.fill_blocks()
         smallest_solution = housecount.connect_all_blocks()
 
-    scatterplot.show_scatterplot(smallest_solution, multiple_plots = False)
+    # scatterplot.show_scatterplot(smallest_solution, multiple_plots = False)
     # Showing a plot of each battery
     # scatterplot.show_scatterplot(smallest_solution)
         # model_2 = model.Model(district_test)
@@ -57,8 +57,15 @@ if __name__ == "__main__":
     # hill_algo = hillclimber.HillClimber(model_test)
     # hill_algo.switch_random_houses_from_battery()
     #
-    sa = simulatedannealing.SimulatedAnnealing(smallest_solution, 50)
-    sa.run_hillclimber(1000, 1)
+    list_cable_lengths = []
+    for i in range(10):
+        print("run SA")
+        sa = simulatedannealing.SimulatedAnnealing(smallest_solution, 50)
+        sa.run_hillclimber(1000, 1)
+        best_value = sa.old_value
+        list_cable_lengths.append(best_value)
+
+    histogram.plotting_histogram(list_cable_lengths)
 
     #
     # plt.plot(sa.x, sa.y)
