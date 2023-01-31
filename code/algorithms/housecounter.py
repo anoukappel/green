@@ -57,6 +57,9 @@ class Housecounter:
                 counter += 5
 
     def largest_block(self):
+        """
+        
+        """
         large = 0
         block_with_most_houses = None
         for i in range(25):

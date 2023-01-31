@@ -1,5 +1,5 @@
 
-from code.algorithms import random, hillclimber, housecounter
+from code.algorithms import random, simulatedannealing, housecounter
 import matplotlib.pyplot as plt
 import copy
 import csv
@@ -9,63 +9,69 @@ from code.visualisatie import histogram
 from code.experiments import random_experiment
 
 
-def hillclimb(number_of_switch, iterations, solution):
-    """ run hillclimber, given number of houses to switch and number of iterations """
-    # find best random solution out of 100 runs
-    # random_solution, costs = random.run(1, district)
-    # print(random_solution.is_solution())
-    climber = hillclimber.HillClimber(solution)
-    # running the hillclimber
-    print("Running the hillclimber...")
-    print(f"Costs before hillclimber: {climber.model.return_total_costs()}")
-    climber.run_hillclimber(iterations, number_of_switch)
-    costs = climber.values
+def simulated_an(number_of_switch, iterations, solution, start_temp, raise_temp):
+    """ run simulated annealing, given number of houses to switch and number of iterations """
+    sa = simulatedannealing.SimulatedAnnealing(solution, start_temp, raise_temp)
+    print("Running the simulated annealing...")
+    print(f"Costs before simulated annealing: {sa.model_temp.return_total_costs()}")
+    sa.run_hillclimber(iterations, number_of_switch)
 
-    best_model = climber.model
+    lowest_costs = sa.best_model.return_total_costs()
+    best_model = sa.best_model
 
-    print(f"Costs after hillclimber: {climber.model.return_total_costs()}")
+    print(f"Costs after simulated annealing: {lowest_costs}")
 
-    return best_model, costs
-    # print(climber.model.return_total_costs())
+    return best_model, lowest_costs
 
-def house_counter_hillclimb(district, runs, number_of_switch, iterations):
+def house_counter_simulated_an(district, runs, number_of_switch, iterations, start_temp, raise_temp):
     smallest_solution = model.Model(district)
     while smallest_solution.is_solution() is False:
         housecount = housecounter.Housecounter(smallest_solution)
         smallest_solution = housecount.run_housecounter()
 
     start_cost = 40000
+    cost = []
     for i in range(runs):
-        best_model, costs = hillclimb(number_of_switch, iterations, smallest_solution)
+        best_model, lowest_costs = simulated_an(number_of_switch, iterations, smallest_solution, start_temp, raise_temp)
         if start_cost > best_model.return_total_costs():
             start_cost = best_model.return_total_costs()
             optimal_model = best_model
-            cost = costs
+            cost.append(lowest_costs)
+    letters = "HC SA"
 
-    histogram.plotting_histogram(cost)
+    saving_plots(runs, cost, letters, start_temp, raise_temp)
 
 
 
-def multiple_runs(district, runs, number_of_switch, iterations):
+def random_simulated_an(district, random_runs, runs, number_of_switch, iterations, start_temp, raise_temp):
     start_cost = 40000
+    cost = []
     for i in range(runs):
-        random_solution, costs = random.run(1, district)
-        best_model, costs = hillclimb(number_of_switch, iterations, random_solution)
+        random_solution, costs = random.run(random_runs, district)
+        best_model, lowest_costs = simulated_an(number_of_switch, iterations, random_solution, start_temp, raise_temp)
         if start_cost > best_model.return_total_costs():
             start_cost = best_model.return_total_costs()
-            optimal_model = best_model
-            cost = costs
+            cost.append(lowest_costs)
+    letters = "RG SA"
+
+    saving_plots(runs, cost, letters, start_temp, raise_temp)
+
+
+
+
+
+def saving_plots(runs, cost, letters, start_temp, raise_temp):
 
     histogram.plotting_histogram(cost)
+    plt.savefig(f'hist: {letters}, start_temp: {start_temp}, raise_temp: {raise_temp}.jpg')
+    plt.show()
 
-
-
-
-
-def saving_plots(district):
-
-    best_model, costs = hillclimber(district)
-
+    # plt.plot(range(runs), sa.values)
+    # # plt.savefig('RG, 500, 1000 (10b).jpg')
+    #
+    #
+    # best_model, lowest_costs = hillclimber(district)
+    #
     # histogram
-
+    #
     # plaatje grid
