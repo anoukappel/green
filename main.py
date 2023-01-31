@@ -2,7 +2,7 @@ from code.classes import battery, district, house, model
 from code.algorithms import random, hillclimber
 from code.solutions import save_solution
 from code.visualisatie import histogram, scatterplot
-from code.experiments import random_experiment
+from code.experiments import random_experiment, hillclimber_experiment
 
 from statistics import mean
 
@@ -17,7 +17,8 @@ if __name__ == "__main__":
     district_test = district.District(file)
 
     """ random algoritme """
-    random_experiment.baseline(district_test)
+    # random_experiment.baseline(district_test)
+    # random_experiment.save_histogram(district_test)
     # list_costs = []
     # for i in range(1):
     #     best_solution = 400000
@@ -42,9 +43,14 @@ if __name__ == "__main__":
 
 
     """ Hillclimber algortihm """
+    # hillclimber_experiment.hillclimb(district_test)
+    hillclimber_experiment.multiple_runs(district_test, 10, 1, 600)
+
+
     # list_costs = []
     # counter = 0
     # solution = 40000
+
 
 
     # # for i in range(20):

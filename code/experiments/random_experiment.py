@@ -4,6 +4,7 @@ import copy
 import csv
 from code.solutions import save_solution
 from code.classes import model
+from code.visualisatie import histogram
 
 def baseline(district):
     """ model is a correct solution """
@@ -17,7 +18,7 @@ def baseline(district):
     results.append(random_solution.return_total_costs())
     correct_models.append(random_solution.is_solution())
     counter = 0
-    number_of_solutions = 9
+    number_of_solutions = 1
     best_model = random_solution
     while counter < number_of_solutions:
         # print(i)
@@ -29,16 +30,22 @@ def baseline(district):
             correct_models.append(random_solution.is_solution())
             if best_model.return_total_costs() > random_model.return_total_costs():
                 best_model = random_model
+    return best_model, results
 
-    print(best_model.return_total_costs())
+
+def save_histogram(district):
+    model, costs = baseline(district)
+    histogram.plotting_histogram(costs)
+    # plt.savefig('histogram.png')
+    # print(best_model.return_total_costs())
         # print(random_solution.is_solution())
 
 
 
 
 
-    save_solution.save("random", best_model)
-    print(results)
+    # save_solution.save("random", best_model)
+    # print(results)
     # print(test)
 
         #     model_test = model.Model(district_test)

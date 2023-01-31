@@ -24,6 +24,9 @@ def run(amount_valid_solutions, district_test):
 
         sum = len(solution.cables)
 
+        if solution.is_solution() is False:
+            continue
+
         if solution.is_solution() is not False:
             list_cable_lengths.append(sum)
 
@@ -35,16 +38,3 @@ def run(amount_valid_solutions, district_test):
 
         first_loop = False
     return smallest_solution, list_cable_lengths
-#
-# def run_random_iterated(iterations, model):
-#     model_sol = 400000
-#     best_model = model
-#     for i in range(iterations):
-#         model_test = random_assignment(model)
-#         while model_test.is_solution() is False:
-#             model_2 = model.Model(district_test)
-#             model_test = random.random_assignment(model_2)
-#         if model_test.return_total_costs() < model_sol:
-#             model_sol = model_test.return_total_costs()
-#             best_model = model_test
-#     return best_model
