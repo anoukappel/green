@@ -25,6 +25,7 @@ class Model(object):
             capacities[battery] = battery.capacity
         return capacities
 
+
     def fill_battery_cable(self) -> Dict[Battery, list[list[int, int]]]:
         """
         Loads the battery position as cable into the Model.
@@ -33,6 +34,7 @@ class Model(object):
         for battery in self.district.batteries:
             batteries_cable[battery] = [[[battery.x_position, battery.y_position]]]
         return batteries_cable
+
 
     def fill_battery_positions(self) -> Dict[Battery, list[list[int, int]]]:
         """
@@ -45,8 +47,11 @@ class Model(object):
             battery_positions[battery] = list
         return battery_positions
 
+
     def return_total_costs(self) -> int:
-        """ returns the total costs of batteries and cables """
+        """
+        Returns the total costs of batteries and cables.
+        """
         battery_costs = 5000 * len(self.district.batteries)
         cable_costs = 0
         for battery in self.district.batteries:
@@ -64,11 +69,13 @@ class Model(object):
         if self.battery_capacity[battery] < 0:
             self.positive_capacities = False
 
+
     def increase_capacity(self, battery: Battery, house: House):
         """
         Increases the battery capacity with the max output of the house.
         """
         self.battery_capacity[battery] = self.battery_capacity[battery] + house.maxoutput
+
 
     def return_a_house_given_a_position(self, position: list[int]) -> Union[bool, House]:
         """
@@ -122,6 +129,7 @@ class Model(object):
                 self.add_route_from_house_to_battery(battery, house_position, position)
             self.solution[house] = battery
 
+
     def set_connection_given_battery(self, house: House, battery: Battery) -> None:
         """
         Sets the connection between house and battery.
@@ -131,6 +139,7 @@ class Model(object):
         house_position = [house.x_position, house.y_position]
         self.add_route_from_house_to_battery(battery, house_position, position)
         self.solution[house] = battery
+
 
     def set_connection_block_given_battery(self, house: House, position: list[int], list_batteries: list[Battery]) -> bool:
         """
@@ -148,6 +157,7 @@ class Model(object):
         if self.check_capacity(house, battery) == False:
             return False
 
+        # battery is None when it was not possible to connect the house to a battery
         elif battery is not None:
             self.reduce_capacity(battery, house)
             house_position = [house.x_position, house.y_position]
@@ -167,12 +177,14 @@ class Model(object):
             position = house.get_closest_battery_or_cable(list_grids)
             return position, list_batteries
 
+
     def get_distance(self, house: House, position: list[int]) -> int:
         """
         Returns the distance between the house and a given position.
         """
         distance = house.get_distance_to_battery_or_cable(position[0], position[1])
         return distance
+
 
     def check_capacity(self, house: House, battery: Battery) -> bool:
         """
@@ -205,13 +217,11 @@ class Model(object):
         self.cables.append([x_position,y_position])
 
 
-
     def connect_battery_to_cable(self, battery: Battery, route: list[list[int]]) -> None:
         """
         Add route between cable and battery.
         """
         self.battery_cable[battery].append(route)
-
 
 
     def add_horizontal_steps(self, position: list[int], house_position: list[int], route: list[list[int]], battery: Battery) -> list[list[int]]:
@@ -264,6 +274,7 @@ class Model(object):
             dup_free.sort()
             self.battery_positions[key] = dup_free
 
+
     def add_route_from_house_to_battery(self, battery: Battery, house_position: list[int], position: list[int]):
         """
         Add route of cables needed to go from house to battery.
@@ -273,6 +284,7 @@ class Model(object):
         route_with_coordinates = self.add_vertical_steps(position, house_position, route, battery)
         self.remove_duplicates()
         self.connect_battery_to_cable(battery, route_with_coordinates)
+
 
     def copy(self) -> Any:
         """

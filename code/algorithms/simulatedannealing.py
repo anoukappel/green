@@ -2,6 +2,8 @@ import random
 import math
 
 from code.algorithms.hillclimber import HillClimber
+from code.classes.model import Model
+from code.classes.house import House
 
 class SimulatedAnnealing(HillClimber):
     """
@@ -11,26 +13,26 @@ class SimulatedAnnealing(HillClimber):
     if this change is acceptable for the time being. The model with the lowest
     value will be saved.
     """
-    def __init__(self, model, temperature=1, raise_temp=5, iterations_without_change=100):
+    def __init__(self, model: Model, temperature: int =1, raise_temp: int =5, iterations_without_change: int =100):
         super().__init__(model)
-        self.raise_temp = raise_temp
-        self.model_temp = model
-        self.t_now = temperature
-        self.values = []
-        self.counter = 0
-        self.new_value = 0
-        self.old_value = len(self.model_temp.cables)
-        self.lowest_value = 100000
+        self.raise_temp: int = raise_temp
+        self.model_temp: Model = model
+        self.t_now: int = temperature
+        self.values: list = []
+        self.counter: int = 0
+        self.new_value: int = 0
+        self.old_value: int = len(self.model_temp.cables)
+        self.lowest_value: int = 100000
         self.best_model = None
-        self.max_acceptable_value = 100000
-        self.temps = []
-        self.iterations_without_change = iterations_without_change
+        self.max_acceptable_value: int = 100000
+        self.temps: list = []
+        self.iterations_without_change: int = iterations_without_change
 
         # extra variable which was used for testing
-        # self.t_begin = temperature
+        # self.t_begin: int = temperature
 
 
-    def calculate_temp(self):
+    def calculate_temp(self) -> None:
         """
         This formula will calculate the new temperature.
         """
@@ -44,7 +46,7 @@ class SimulatedAnnealing(HillClimber):
         self.temps.append(self.t_now)
 
 
-    def check_temp(self):
+    def check_temp(self) -> None:
         """
         When the value stays the same for 500 iterations, the temperature
         will go up again.
@@ -57,7 +59,7 @@ class SimulatedAnnealing(HillClimber):
             self.max_acceptable_value = self.old_value * 1.02
 
 
-    def check_solution(self, new_model):
+    def check_solution(self, new_model: Model) -> None:
         """
         Caculates the new and old value of the models. Than caculates the
         probability. If the new model is a valid solution, the probability
@@ -65,22 +67,24 @@ class SimulatedAnnealing(HillClimber):
         the new value is less than the maximum acceptable value, then the new
         model will be aceppeted and a new temperature will be calculated.
         """
-        self.new_value = len(self.new_model.cables)
-        self.old_value = len(self.model_temp.cables)
+        self.new_value: int = len(self.new_model.cables)
+        self.old_value: int = len(self.model_temp.cables)
 
         try:
-            probability = math.exp(-(self.new_value - self.old_value) / self.t_now)
+            probability: int = math.exp(-(self.new_value - self.old_value) / self.t_now)
 
             if self.new_model.is_solution():
                 if random.random() < probability and self.new_value < self.max_acceptable_value:
                     self.model_temp = self.new_model
+
                     # the model with the lowest value will be saved as best model
                     if len(self.model_temp.cables) < self.lowest_value:
                         self.lowest_value = len(self.model_temp.cables)
                         self.best_model = self.model_temp
                     # keeps track of all the values in costs
                     self.values.append(int(self.model_temp.return_total_costs()))
-                    counter = 0
+                    self.counter = 0
+
                 else:
                     # keeps track of all the values in costs
                     self.values.append(int(self.model_temp.return_total_costs()))

@@ -19,6 +19,7 @@ class House(object):
         distance = abs(self.x_position - x_position) + abs(self.y_position - y_position)
         return distance
 
+
     def get_closest_battery_or_cable(self, list: list[Tuple[int, int]]) -> Optional[Tuple[int, int]]:
         """
         Input is a list of all coordinates which are connected to batteries which have enough

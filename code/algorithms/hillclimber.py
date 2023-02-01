@@ -18,6 +18,7 @@ class HillClimber:
         self.new_model = model
         self.values = [int(model.return_total_costs())]
 
+
     def returns_house_to_switch(self, house: House, battery: Battery, new_model: Model) -> Union[bool, House]:
         """
         Returns a house which is suitable to switch given another house connected
@@ -38,6 +39,7 @@ class HillClimber:
             return random.choice(houses_to_switch)
         else:
             return False
+
 
     def switch_random_house_and_battery_in_solution(self, new_model: Model) -> None:
         """

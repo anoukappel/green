@@ -50,8 +50,10 @@ def house_counter_hillclimb(district: District, runs: int, number_of_switch: int
     return lowest_costs_hist
 
 
-
 def multiple_runs(district: District, runs: int, number_of_switch: int, iterations: int, random_runs: int) -> list[int]:
+    """
+    Runs the Hillclimber algortihm with a starting solution generated from Random Greedy.
+    """
     start_cost = 40000
     # fill list of total cost to display in histogram
     lowest_costs_hist = []
@@ -70,8 +72,13 @@ def multiple_runs(district: District, runs: int, number_of_switch: int, iteratio
     return lowest_costs_hist
 
 
-
 def saving_plots(district: District, runs: int, number_of_switch: int, iterations: int, costs_flow: list[int], total_costs_hist: list[int], optimal_model: Model, start_model: str):
+    """
+    Plots a grid of all connections of houses and batteries.
+    A line graph of costs the and the iterations of 1 run.
+    A histogram of the frequency and the scores of multiple runs.
+    And a json file with all the connections.
+    """
     # save scatterplot of best solution
     scatterplot.show_scatterplot(optimal_model, multiple_plots = False)
     plt.savefig(f"code/experiments/hillclimber_experiment/grid_district_{district.district}_iterations_{iterations}")

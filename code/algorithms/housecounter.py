@@ -1,5 +1,6 @@
 from code.classes.model import Model
 from code.classes.district import District
+from code.classes.house import House
 import random
 
 class Housecounter:
@@ -11,13 +12,13 @@ class Housecounter:
     The block with the most houses will be connected first and with the least
     houses last.
     """
-    def __init__(self, model):
-        self.model = model
-        self.blocks = {}
-        self.houses_left = []
+    def __init__(self, model: Model):
+        self.model: Model = model
+        self.blocks: dict = {}
+        self.houses_left: list = []
 
 
-    def make_blocks(self):
+    def make_blocks(self) -> None:
         """
         Makes 25 list in a dictionairy. With a number of a block as key.
         Block 0 is in the bottom left side and block 24 in the upper right side.
@@ -26,7 +27,7 @@ class Housecounter:
             self.blocks[i] = []
 
 
-    def fill_blocks(self):
+    def fill_blocks(self) -> None:
         """
         Fills the list in the dictionairy with houses present in that block.
         """
@@ -39,12 +40,11 @@ class Housecounter:
                     self.blocks[i].append(house)
 
 
-
-    def houses_in_block(self, house):
+    def houses_in_block(self, house: House) -> int:
         """
         Checks in which block a house is.
         """
-        counter = -1
+        counter: int = -1
         # looks from bottom to top if the house is in a particular row
         for i in range(10, 51, 10):
             if house.y_position <= i:
@@ -58,11 +58,11 @@ class Housecounter:
                 counter += 5
 
 
-    def largest_block(self):
+    def largest_block(self) -> int:
         """
         Finds the block with the most houses in it.
         """
-        large = 0
+        large: int = 0
         block_with_most_houses = None
         # loops through all blocks
         for i in range(25):
@@ -72,7 +72,8 @@ class Housecounter:
                 block_with_most_houses = i
         return block_with_most_houses
 
-    def connect_block_with_battery(self):
+
+    def connect_block_with_battery(self) -> None:
         """
         Connects all the houses in a block with the same battery/corresponding cable.
         If a house can't be connected because of the limit of the capacity
@@ -84,13 +85,9 @@ class Housecounter:
             position, list_batteries = self.model.get_closest_position(self.blocks[block][0])
             if position is not None:
                 smallest_distance = 10000
-
-                    #             list = self.blocks[block]
-                    #             random.shuffle(list)
-                list = self.blocks[block]
+                list: list = self.blocks[block]
                 random.shuffle(list)
 
-                # for house in self.blocks[block]:
                 for house in list:
                     distance = self.model.get_distance(house, position)
                     # determines the closest house to the battery/corresponding cable
@@ -99,7 +96,7 @@ class Housecounter:
                         closest_house = house
 
                 # removes closest house from the dictionairy
-                list = self.blocks[block]
+                list: list = self.blocks[block]
                 list.remove(closest_house)
                 self.blocks[block] = list
 
@@ -110,9 +107,7 @@ class Housecounter:
         self.blocks[block] = []
 
 
-
-
-    def connect_left_over_houses(self):
+    def connect_left_over_houses(self) -> None:
         """
         Connect every house that couldn't be connect to a battery/cable before.
         """
@@ -122,7 +117,7 @@ class Housecounter:
                 self.model.set_connection(house, self.houses_left)
 
 
-    def run_housecounter(self):
+    def run_housecounter(self) -> Model:
         """
         Runs the housecounter algoritme. Returns model.
         """

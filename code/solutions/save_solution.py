@@ -1,8 +1,13 @@
 import json
+from code.classes.model import Model
+from code.classes.battery import Battery
 
 
-def create_house_dict(solution, battery):
-    houses = []
+def create_house_dict(solution: Model, battery: Battery) -> list:
+    """
+    Returns a list of houses connect to a particular battery.
+    """
+    houses: list = []
     for house in solution.solution:
         if solution.solution[house] == battery:
             for list in solution.battery_cable[battery]:
@@ -18,7 +23,11 @@ def create_house_dict(solution, battery):
                     houses.append(dict_house)
     return houses
 
-def create_battery_dict(solution, dict):
+
+def create_battery_dict(solution: Model, dict) -> None:
+    """
+    Makes a battery dict which will be filled with the houses.
+    """
     for battery in solution.district.batteries:
         houses = create_house_dict(solution, battery)
         dict.append({
@@ -27,7 +36,10 @@ def create_battery_dict(solution, dict):
             "houses": houses
         })
 
-def save(filename, solution):
+def save(filename, solution: Model) -> None:
+    """
+    Creates a json file.
+    """
     district = solution.district.district
     # own_costs = calculate_costs_cables(solution.district.houses) + calculate_costs_batteries(solution.district.batteries)
     output = [

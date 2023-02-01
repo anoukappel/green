@@ -4,6 +4,7 @@ import numpy as np
 from typing import Any, Tuple, Optional
 from code.classes.model import Model
 
+
 def creating_grid_district() -> None:
     """
     Function that creates a 50 x 50 grid.
@@ -24,11 +25,13 @@ def creating_grid_district() -> None:
     ax.grid(which='minor', alpha=0.2)
     ax.grid(which='major', alpha=0.5)
 
+
 def plot_one_battery(x_battery: int, y_battery: int, color: Any) -> None:
     """
     Function that plots one of the batteries on the grid with chosen color.
     """
     plt.plot(x_battery, y_battery, color = color, marker = 's', markersize = 8)
+
 
 def plot_element(coordinates_list: list[int], color: Any, marker = "", linestyle = "")   -> None:
     """

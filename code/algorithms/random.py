@@ -14,7 +14,11 @@ def random_assignment(model: Model) -> Model:
 
     return model
 
+
 def run(amount_valid_solutions: int, district: District) -> tuple[Model, list[int]]:
+    """
+    Runs the random algorithm.
+    """
     costs = []
     first_loop = True
     while (len(costs) != amount_valid_solutions):

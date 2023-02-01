@@ -6,8 +6,9 @@ from code.solutions import save_solution
 # from code.classes import model
 from code.visualisatie import histogram, scatterplot
 # from code.algorithms import random
+from code.classes.district import District
 
-def baseline(district, iterations):
+def baseline(district: District, iterations: int):
     """
     Create solid solutions given a number of iterations and save solution, histogram, grid of this solution.
     """
