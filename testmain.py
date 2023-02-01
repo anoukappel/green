@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     smallest_solution = model.Model(district_test)
     while smallest_solution.is_solution() is False:
-        # smallest_solution, list_cable_lengths = random.run(10, district_test)
+        # smallest_solution, list_cable_lengths = random.run(1, district_test)
     # list_cable_lengths = []
         housecount = housecounter.Housecounter(smallest_solution)
     #     # housecount.fill_blocks()
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     # while smallest_solution.is_solution() is False:
     #     smallest_solution, list_cable_length = random.run(1, district_test)
     print("run SA")
-    sa = simulatedannealing.SimulatedAnnealing(smallest_solution, 10, 20)
+    sa = simulatedannealing.SimulatedAnnealing(smallest_solution, 20, 10)
     sa.run_hillclimber(10000, 1)
     best_model = sa.best_model
     best_costs = best_model.return_total_costs()
@@ -98,4 +98,6 @@ if __name__ == "__main__":
     #
     plt.plot(range(10000), sa.values)
     # plt.savefig('RG, 500, 1000 (10b).jpg')
+    plt.show()
+    plt.plot(range(10000), sa.temps)
     plt.show()

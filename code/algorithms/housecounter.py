@@ -58,36 +58,54 @@ class Housecounter:
 
     def largest_block(self):
         """
-
+        Finds the block with the most houses in it.
         """
         large = 0
         block_with_most_houses = None
+        # loops through all blocks
         for i in range(25):
             if len(self.blocks[i]) > large:
+                # large will become the number of houses in block[i]
                 large = len(self.blocks[i])
                 block_with_most_houses = i
         return block_with_most_houses
 
 
     def connect_block_with_battery(self):
+        """
+        Connects all the houses in a block with the same battery/corresponding cable.
+        If a house can't be connected because of the limit of the capacity
+        of a battery, then this house will be added to a seperate list.
+        """
         block = self.largest_block()
         for i in range(len(self.blocks[block])):
+            # gets position of closest battery/cable
             position, list_batteries = self.model.get_closest_position(self.blocks[block][0])
             smallest_distance = 10000
+
             for house in self.blocks[block]:
                 distance = self.model.get_distance(house, position)
+                # determines the closest house to the battery/corresponding cable
                 if smallest_distance > distance:
                     smallest_distance = distance
                     closest_house = house
+
+            # removes closest house from the dictionairy
             list = self.blocks[block]
             list.remove(closest_house)
             self.blocks[block] = list
+
+            # connects closest house to battery/corresponding cable
             if self.model.set_connection_block_given_battery(closest_house, position, list_batteries) == False:
+                # append to list when house can't be connected
                 self.houses_left.append(closest_house)
         self.blocks[block] = []
 
 
     def connect_left_over_houses(self):
+        """
+        Connect every house that couldn't be connect to a battery/cable before.
+        """
         if self.houses_left != []:
             random.shuffle(self.houses_left)
             for house in self.houses_left:
@@ -95,6 +113,9 @@ class Housecounter:
 
 
     def run_housecounter(self):
+        """
+        Runs the housecounter algoritme. Returns model.
+        """
         self.fill_blocks()
         for i in range(25):
             self.connect_block_with_battery()
