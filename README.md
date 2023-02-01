@@ -29,7 +29,7 @@ opgeslagen en gebruikt in de volgende iteratie.
 
 #### Simulatedannealing
 Dit algoritme lijkt veel op hillclimber, maar er zijn verschillen. Zo begint SA ook met een al eerder verkregen oplossing van random+greedy of housecounter. Vervolgens verwisseld het ook steeds twee huizen en kijkt of de oplossing geldig is. Als de nieuwe oplossing een verbetering is dan wordt dit het nieuwe model. Als het geen verbetering is, kan de nieuwe oplossing worden aangenomen. Of dit gebeurd is afhankelijk van de temperatuur.
-Als de temperatuur hoog is dan is de kans dat een slechte verandering wordt aangenomen groot. Als de temperatuur laag is, is deze kans juist heel laag. De temperatuur zal steeds verder zakken naarmate het algoritme aan de gang is. Hierdoor zal naarmate het algoritme bezig is steeds minder slechte veranderingen worden aangenomen. Hierdoor kom je uiteindelijk op een zo laag mogelijk aantal kabels uit. 
+Als de temperatuur hoog is dan is de kans dat een slechte verandering wordt aangenomen groot. Als de temperatuur laag is, is deze kans juist heel laag. De temperatuur zal steeds verder zakken naarmate het algoritme aan de gang is. Hierdoor zal naarmate het algoritme bezig is steeds minder slechte veranderingen worden aangenomen. Hierdoor kom je uiteindelijk op een zo laag mogelijk aantal kabels uit.
 
 ## Vereisten
 De code is volledig geschreven in Python 3.7.  Verder zijn er geen packages nodig om de code succesvol te draaien.
@@ -88,6 +88,7 @@ Wanneer twee dezelfde experimenten zijn uitgevoerd worden de laatste geproduceer
   - **/code/classes**: bevat de vier benodigde classes voor deze case
   - **/code/visualisation**: bevat de code voor het maken van de visualisaties van deze case
   - **/code/solutions**: bevat de code voor het opslaan van de oplossing als een json bestand
+  - **/code/experiments**: bevat de code voor het uitvoeren van de experimenten en de plots die hieruit voorkwamen
 - **/data**: bevat de verschillende databestanden die nodig zijn om het district te vullen en oplossingen te genereren
 
 ## Auteurs
