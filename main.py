@@ -4,7 +4,8 @@ from code.solutions import save_solution
 from code.visualisatie import histogram, scatterplot
 from code.experiments.random_experiment import random_experiment
 from code.experiments.hillclimber_experiment import hillclimber_experiment
-from code.experiments.simulated_annealing import simulatedannealing_experiment
+from code.experiments.simulated_annealing_experiments import simulatedannealing_experiment
+from code.experiments.housecounter_experiments import housecounter_experiments
 
 from statistics import mean
 
@@ -20,9 +21,15 @@ if __name__ == "__main__":
     district_test = district.District(file)
 
     """ The experiments """
-    """ random algoritme """
+    """ Random algoritme """
     # random_experiment.baseline(district_test, 1000)
 
+    """ Housecounter algorithm"""
+    # parameters used in the housecounter, if changed and algorithm is runned again than new plots will be saved
+    runs = 5
+    
+    # running the algorithm
+    housecounter_experiments.run_housecounter(district_test, runs)
 
     """ Hillclimber algortihm """
     #parameters used in the hillclimber, if changed and algorithm is runned again than new plots will be saved
@@ -36,7 +43,7 @@ if __name__ == "__main__":
     # run the algorithm using house_counter solution as a starting point
     hillclimber_experiment.house_counter_hillclimb(district_test, number_of_runs,  houses_to_switch, iterations)
 
-    """ simulated annealing """
+    """ Simulated annealing """
     # # parameters used in simulated annealing algorithm, if changed and algorithm is runned again than new plots will be saved
     number_of_runs = 1
     houses_to_switch = 1

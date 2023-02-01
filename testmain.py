@@ -82,8 +82,8 @@ if __name__ == "__main__":
     # while smallest_solution.is_solution() is False:
     #     smallest_solution, list_cable_length = random.run(1, district_test)
     print("run SA")
-    sa = simulatedannealing.SimulatedAnnealing(smallest_solution, 20, 10)
-    sa.run(10000, 1)
+    sa = simulatedannealing.SimulatedAnnealing(smallest_solution, 20, 10, 300)
+    sa.run(2000, 1)
     best_model = sa.best_model
     best_costs = best_model.return_total_costs()
     print(best_costs)
@@ -94,10 +94,10 @@ if __name__ == "__main__":
 
     # self.t_begin = temperature
     # self.t_now = self.t_now - (self.t_begin / self.iterations)
-    
+
     #
-    plt.plot(range(10000), sa.values)
+    plt.plot(range(2000), sa.values)
     # plt.savefig('RG, 500, 1000 (10b).jpg')
     plt.show()
-    plt.plot(range(10000), sa.temps)
+    plt.plot(range(2000), sa.temps)
     plt.show()
