@@ -52,7 +52,7 @@ def multiple_runs(district, runs, number_of_switch, iterations, random_runs):
     start_cost = 40000
     lowest_costs_hist = []
     for i in range(runs):
-        random_solution, costs = random.run(iterations_random, district)
+        random_solution, costs = random.run(random_runs, district)
         best_model, costs = hillclimb(number_of_switch, iterations, random_solution)
         lowest_costs_hist.append(best_model.return_total_costs())
         if start_cost > best_model.return_total_costs():
@@ -76,11 +76,12 @@ def saving_plots(district, runs, number_of_switch, iterations, costs_flow, total
     plt.xlabel("Iterations")
     plt.ylabel("Total costs")
     plt.title(f"Best solution of hillclimber in combination with {start_model}.")
+    plt.ylim(30300, 32000)
     plt.savefig(f"code/experiments/hillclimber_experiment/{start_model}_runs_{runs}_iterations_{iterations}")
     plt.close()
 
     # save histogram of all outcomes after running hillclimber on start_model
-    histogram.plotting_histogram(total_costs_hist, "Total costs", "Frequency", f"{start_model} ({iterations})")
+    histogram.plotting_histogram(total_costs_hist, "Total costs", "Frequency", f"Hill climber with start solution from: {start_model} ({iterations})")
     plt.savefig(f"code/experiments/hillclimber_experiment/histogram_{start_model}_district_{district.district}_iterations_{iterations}")
     plt.close()
 

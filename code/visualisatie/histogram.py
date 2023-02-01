@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from code.classes.model import Model
 
 def plotting_histogram(array_input, x_title, y_title, title):
-    bins_list = 30
+    bins_list = 50
     plt.hist(array_input, bins = bins_list)
     plt.xlabel(x_title)
     plt.ylabel(y_title)

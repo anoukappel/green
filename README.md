@@ -15,12 +15,58 @@ Een voorbeeld kan gerund worden door aanroepen van:
 ```
 python main.py
 ```
+Dan wordt het random algoritme gerund en van de beste oplossing uit 1000 iteraties worden meerder plots opgeslagen in de
+experiments/random_experiment map, district 1 wordt nu standaard gebruikt om de oplossing te berekenen.
+De wijk aanpassen kan door in main.py de variabele op regel 17 aan te passen naar 1, 2 of 3.
+
+
+Om de andere twee algoritmes te runnen moeten de parameters ingevuld worden in main.py en de juiste regels uncomment worden.
+Bij het runnen van bijvoorbeeld de hillclimber_experiment moeten de volgende regels uncomment worden.
+```
+number_of_runs = 20
+houses_to_switch = 1
+iterations = 2000
+random_runs = 10
+```
+In combinatie met Random en Greedy, moet onderstaande regel uncommend worden:
+```
+hillclimber_experiment.multiple_runs(district_test, number_of_runs, houses_to_switch, iterations, random_runs)
+```
+In combinatie met Housecounte, moet onderstaande regel uncommend worden:
+```
+hillclimber_experiment.house_counter_hillclimb(district_test, number_of_runs,  houses_to_switch, iterations)
+```
+Alle andere code die onder de algoritmes staan moeten worden gecomment.
+Het runnen van de simulated annealing algoritme werkt op een soortegelijke manier:
+```
+number_of_runs = 1
+houses_to_switch = 1
+iterations = 1000
+start_temp = 50
+raise_temp = 20
+random_runs = 10
+```
+In combinatie met Random + Greedy, moet onderstaande regel uncommend worden:
+```
+simulatedannealing_experiment.random_simulated_an(district, random_runs, number_of_runs, houses_to_switch, iterations, start_temp, raise_temp)
+```
+In combinatie met Housecounter, moet onderstaande regel uncommend worden:
+```
+simulatedannealing_experiment.house_counter_simulated_an(district_test, number_of_runs, houses_to_switch, iterations, start_temp, raise_temp)
+```
+De plots worden opgelagen met een naam die aangeeft hoeveel iteraties er gedaan zijn en welk algoritme is gebruikt.
+Wanneer twee dezelfde experimenten zijn uitgevoerd worden de laatste geproduceerde resultaten opgeslagen.
 
 ## Structuur
 
+- **/code**: bevat alle code van dit project
+  - **/code/algorithms**: bevat de code voor algoritmes
+  - **/code/classes**: bevat de vier benodigde classes voor deze case
+  - **/code/visualisation**: bevat de code voor het maken van de visualisaties van deze case
+  - **/code/solutions**: bevat de code voor het opslaan van de oplossing als een json bestand
+- **/data**: bevat de verschillende databestanden die nodig zijn om het district te vullen en oplossingen te genereren
 
 ## Auteurs
-
-## linkje voor pinguin:
-* sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
-* sudo apt-get install python3-tk
+- Anouk Appel
+- Brenda Bax
+- Isabelle van Leeuwen
