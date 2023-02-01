@@ -11,7 +11,7 @@ class SimulatedAnnealing(HillClimber):
     if this change is acceptable for the time being. The model with the lowest
     value will be saved.
     """
-    def __init__(self, model, temperature=1, raise_temp=5):
+    def __init__(self, model, temperature=1, raise_temp=5, iterations_without_change=100):
         super().__init__(model)
         self.raise_temp = raise_temp
         self.model_temp = model
@@ -24,6 +24,7 @@ class SimulatedAnnealing(HillClimber):
         self.best_model = None
         self.max_acceptable_value = 100000
         self.temps = []
+        self.iterations_without_change = iterations_without_change
 
         # extra variable which was used for testing
         # self.t_begin = temperature
@@ -33,7 +34,7 @@ class SimulatedAnnealing(HillClimber):
         """
         This formula will calculate the new temperature.
         """
-        # the liniear formula which is used for testing:
+        # the linear formula which is used for testing:
         # self.t_now = self.t_now - (self.t_begin / self.iterations)
 
         alpha = 0.99
@@ -48,7 +49,7 @@ class SimulatedAnnealing(HillClimber):
         When the value stays the same for 500 iterations, the temperature
         will go up again.
         """
-        if self.counter == 500:
+        if self.counter == self.iterations_without_change:
             self.t_now = self.raise_temp
             self.counter = 0
 

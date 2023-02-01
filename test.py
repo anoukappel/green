@@ -31,10 +31,14 @@ if __name__ == "__main__":
     # histogram.plotting_histogram(list_cable_lengths)
 
 
-    # simulatedannealing_experiment.random_simulated_an(district_test, 1, 1, 1, 1000, 10, 25)
-    simulatedannealing_experiment.house_counter_simulated_an(district_test, 5, 1, 100, 10, 25)
+    simulatedannealing_experiment.random_simulated_an(district_test, 10, 5, 1, 1000, 20, 10)
+    # simulatedannealing_experiment.house_counter_simulated_an(district_test, 5, 1, 100, 10, 25)
 
+    # parameters used in the housecounter, if changed and algorithm is runned again than new plots will be saved
+    runs = 5
 
+    # running the algorithm
+    housecounter_experiments.run_housecounter(district_test, runs)
 
 
 
