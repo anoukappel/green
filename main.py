@@ -29,17 +29,17 @@ if __name__ == "__main__":
     runs = 1
 
     # running the algorithm
-    # housecounter_experiments.run_housecounter(district_test, runs)
+    housecounter_experiments.run_housecounter(district_test, runs)
 
     """ Hillclimber algortihm """
     #parameters used in the hillclimber, if changed and algorithm is runned again than new plots will be saved
     number_of_runs = 1
     houses_to_switch = 1
-    iterations = 1000
+    iterations = 1
     random_runs = 1
 
     # run the algorithm using the best of a number of random solutions as a starting point
-    # hist_hill_random = hillclimber_experiment.multiple_runs(district_test, number_of_runs, houses_to_switch, iterations, random_runs)
+    hist_hill_random = hillclimber_experiment.multiple_runs(district_test, number_of_runs, houses_to_switch, iterations, random_runs)
     # run the algorithm using house_counter solution as a starting point
     # district_test = district.District(file, district_number)
     hist_hill_house = hillclimber_experiment.house_counter_hillclimb(district_test, number_of_runs,  houses_to_switch, iterations)
@@ -48,17 +48,17 @@ if __name__ == "__main__":
     # # parameters used in simulated annealing algorithm, if changed and algorithm is runned again than new plots will be saved
     number_of_runs = 1
     houses_to_switch = 1
-    iterations = 1000
+    iterations = 1
     start_temp = 50
     raise_temp = 20
     random_runs = 1
     iterations_without_change = 200
     #
     # # run the algorithm using house_counter solution as a starting point
-    #hist_SA_random = simulatedannealing_experiment.house_counter_simulated_an(district_test, number_of_runs, houses_to_switch, iterations, start_temp, raise_temp)
+    #hist_SA_random = simulatedannealing_experiment.house_counter_simulated_an(district_test, number_of_runs, houses_to_switch, iterations, start_temp, raise_temp, iterations_without_change)
     #
     # # run the algorithm using the best of a number of random solutions as a starting point
-    #hist_SA_housecounter = simulatedannealing_experiment.random_simulated_an(district_test, random_runs, number_of_runs, houses_to_switch, iterations, start_temp, raise_temp, iterations_without_change)
+    # hist_SA_housecounter = simulatedannealing_experiment.random_simulated_an(district_test, random_runs, number_of_runs, houses_to_switch, iterations, start_temp, raise_temp, iterations_without_change)
     """ Saving the histogram for all algorithms into one histogram. """
 
     # code voor histogram

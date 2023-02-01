@@ -2,7 +2,7 @@ from code.classes.model import Model
 from code.classes.district import District
 import random
 
-def random_assignment(model):
+def random_assignment(model: Model) -> Model:
     """
     Assign (randomly) every house to a battery which is closest and available.
     """
@@ -14,12 +14,11 @@ def random_assignment(model):
 
     return model
 
-def run(amount_valid_solutions, district_test):
-
+def run(amount_valid_solutions: int, district: District) -> tuple[Model, list[int]]:
     costs = []
     first_loop = True
     while (len(costs) != amount_valid_solutions):
-        model_test = Model(district_test)
+        model_test = Model(district)
         solution = random_assignment(model_test)
 
         sum = solution.return_total_costs()

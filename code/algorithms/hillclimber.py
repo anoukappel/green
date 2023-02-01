@@ -1,22 +1,24 @@
 import random
-
 from .random import random_assignment
 from code.classes.model import Model
+from code.classes.house import House
+from code.classes.battery import Battery
+from typing import Any, Union, Optional, Dict
 
 class HillClimber:
     """
     The HillClimber class switches the connected battery of two random houses.
     If this change is an improvement and still valid, than the solution is saved.
     """
-    def __init__(self, model):
+    def __init__(self, model: Model):
         if not model.is_solution():
             raise Exception("Please provide a complete solution.")
 
-        self.model = model.copy()
-        self.new_model = None
+        self.model: Model = model.copy()
+        self.new_model = model
         self.values = [int(model.return_total_costs())]
 
-    def returns_house_to_switch(self, house, battery, new_model):
+    def returns_house_to_switch(self, house: House, battery: Battery, new_model: Model) -> Union[bool, House]:
         """
         Returns a house which is suitable to switch given another house connected
         to a certain battery. Making sure there is enough capacity to switch.
@@ -37,7 +39,7 @@ class HillClimber:
         else:
             return False
 
-    def switch_random_house_and_battery_in_solution(self, new_model):
+    def switch_random_house_and_battery_in_solution(self, new_model: Model) -> None:
         """
         Switches two houses from battery in model.solution and creates a new model with this.
         """
@@ -62,7 +64,7 @@ class HillClimber:
             self.fill_solution(new_sol, new_model)
 
 
-    def fill_solution(self, new_sol, new_model):
+    def fill_solution(self, new_sol: Dict[House, Battery], new_model: Model) -> None:
         """
         Creates a new solution, given the solution. So every house has assigned
         battery beforehand.
@@ -74,7 +76,7 @@ class HillClimber:
         self.new_model = new_model
 
 
-    def check_solution(self, new_model):
+    def check_solution(self, new_model: Model) -> None:
         """
         Check if new solution is an improvement, if True save the new_model as the model so that in
         the next iteration the solution is compared to the new model.
@@ -87,7 +89,7 @@ class HillClimber:
         self.values.append(int(self.model.return_total_costs()))
 
 
-    def run(self, iterations, number_of_switch):
+    def run(self, iterations: int, number_of_switch: int) -> None:
         """
         Runs the hillclimber algorithm for a number of iterations,
         each time switching one house.
