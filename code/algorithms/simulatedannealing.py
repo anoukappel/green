@@ -25,11 +25,17 @@ class SimulatedAnnealing(HillClimber):
         self.max_acceptable_value = 100000
         self.temps = []
 
+        # extra variable which was used for testing
+        # self.t_begin = temperature
+
 
     def calculate_temp(self):
         """
-        This exponential formula will calculate the new temperature.
+        This formula will calculate the new temperature.
         """
+        # the liniear formula which is used for testing:
+        # self.t_now = self.t_now - (self.t_begin / self.iterations)
+
         alpha = 0.99
         self.t_now = self.t_now * alpha
 
