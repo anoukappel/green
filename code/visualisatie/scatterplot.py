@@ -49,7 +49,7 @@ def show_scatterplot(smallest_solution: Model, multiple_plots = True) -> None:
     Function that plots all the houses, batteries and all the cables.
     """
 
-    colors = ['b', 'c', 'g', 'r', 'k', 'm']
+    colors = ['b', 'peru', 'g', 'r', 'k', 'm']
 
     creating_grid_district()
 
@@ -71,6 +71,3 @@ def show_scatterplot(smallest_solution: Model, multiple_plots = True) -> None:
         # creating seperate plots for each battery if condition is true
         if multiple_plots and i < 5:
             creating_grid_district()
-
-    # plt.show()
-    # plt.close()

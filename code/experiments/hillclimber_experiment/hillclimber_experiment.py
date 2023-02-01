@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from code.solutions import save_solution
 from code.classes import model
 from code.visualisatie import histogram, scatterplot
+from code.experiments.housecounter_experiments import housecounter_experiments
 
 
 def hillclimb(number_of_switch, iterations, solution):
@@ -22,11 +23,12 @@ def hillclimb(number_of_switch, iterations, solution):
 
 
 def house_counter_hillclimb(district, runs, number_of_switch, iterations):
-    smallest_solution = model.Model(district)
+    # district_test = model.Model(district)
     lowest_costs_hist = []
-    while smallest_solution.is_solution() is False:
-        housecount = housecounter.Housecounter(smallest_solution)
-        smallest_solution = housecount.run_housecounter()
+    # while smallest_solution.is_solution() is False:
+    #     housecount = housecounter.Housecounter(smallest_solution)
+    #     smallest_solution = housecount.run_housecounter()
+    smallest_solution = housecounter_experiments.run_housecounter(district, runs)
 
     lowest_costs_hist.append(smallest_solution.return_total_costs())
     start_cost = 40000
@@ -39,7 +41,7 @@ def house_counter_hillclimb(district, runs, number_of_switch, iterations):
             optimal_model = best_model
             cost = costs
 
-    # saving_plots(district, runs, number_of_switch, iterations, cost, lowest_costs_hist, optimal_model, "housecounter")
+    saving_plots(district, runs, number_of_switch, iterations, cost, lowest_costs_hist, optimal_model, "housecounter")
     return lowest_costs_hist
 
 
@@ -56,7 +58,7 @@ def multiple_runs(district, runs, number_of_switch, iterations, random_runs):
             optimal_model = best_model
             cost = costs
 
-    # saving_plots(district, runs, number_of_switch, iterations, cost, lowest_costs_hist, optimal_model, "random_+_greedy")
+    saving_plots(district, runs, number_of_switch, iterations, cost, lowest_costs_hist, optimal_model, "random_+_greedy")
     return lowest_costs_hist
 
 

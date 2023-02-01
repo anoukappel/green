@@ -8,8 +8,6 @@ def plotting_histogram(array_input, x_title, y_title, title):
     plt.xlabel(x_title)
     plt.ylabel(y_title)
     plt.title(title)
-    # plt.show()
-    # plt.close()
 
 def multiple_histograms(costs_ar_1, name_1, costs_ar_2, name_2, costs_ar_3 = False, name_3 = '', costs_ar_4 = False, name_4 = ''):
     fig, ax = plt.subplots()
@@ -21,4 +19,3 @@ def multiple_histograms(costs_ar_1, name_1, costs_ar_2, name_2, costs_ar_3 = Fal
         ax.hist(costs_ar_4, 10, None, ec='yellow', fc='none', lw=1.5, histtype='step', label= name_4)
 
     ax.legend(loc='upper right')
-    # plt.show()

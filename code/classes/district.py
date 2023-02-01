@@ -10,7 +10,9 @@ class District(object):
 
 
     def load_houses(self, houses_file: str) -> list[House]:
-        """ load all the houses in District """
+        """
+        Load all the houses in District.
+        """
         houses = []
 
         with open(houses_file, 'r') as file:
@@ -23,7 +25,9 @@ class District(object):
 
 
     def load_batteries(self, battery_file:str) -> list[Battery]:
-        """ load all the batteries in District """
+        """
+        Load all the batteries in District.
+        """
         batteries = []
         with open(battery_file, 'r') as file:
             header = file.readline()

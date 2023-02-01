@@ -39,6 +39,7 @@ class Housecounter:
                     self.blocks[i].append(house)
 
 
+
     def houses_in_block(self, house):
         """
         Checks in which block a house is.
@@ -71,7 +72,6 @@ class Housecounter:
                 block_with_most_houses = i
         return block_with_most_houses
 
-
     def connect_block_with_battery(self):
         """
         Connects all the houses in a block with the same battery/corresponding cable.
@@ -82,25 +82,34 @@ class Housecounter:
         for i in range(len(self.blocks[block])):
             # gets position of closest battery/cable
             position, list_batteries = self.model.get_closest_position(self.blocks[block][0])
-            smallest_distance = 10000
+            if position is not None:
+                smallest_distance = 10000
 
-            for house in self.blocks[block]:
-                distance = self.model.get_distance(house, position)
-                # determines the closest house to the battery/corresponding cable
-                if smallest_distance > distance:
-                    smallest_distance = distance
-                    closest_house = house
+                    #             list = self.blocks[block]
+                    #             random.shuffle(list)
+                list = self.blocks[block]
+                random.shuffle(list)
 
-            # removes closest house from the dictionairy
-            list = self.blocks[block]
-            list.remove(closest_house)
-            self.blocks[block] = list
+                # for house in self.blocks[block]:
+                for house in list:
+                    distance = self.model.get_distance(house, position)
+                    # determines the closest house to the battery/corresponding cable
+                    if smallest_distance > distance:
+                        smallest_distance = distance
+                        closest_house = house
 
-            # connects closest house to battery/corresponding cable
-            if self.model.set_connection_block_given_battery(closest_house, position, list_batteries) == False:
-                # append to list when house can't be connected
-                self.houses_left.append(closest_house)
+                # removes closest house from the dictionairy
+                list = self.blocks[block]
+                list.remove(closest_house)
+                self.blocks[block] = list
+
+                # connects closest house to battery/corresponding cable
+                if self.model.set_connection_block_given_battery(closest_house, position, list_batteries) == False:
+                    # append to list when house can't be connected
+                    self.houses_left.append(closest_house)
         self.blocks[block] = []
+
+
 
 
     def connect_left_over_houses(self):

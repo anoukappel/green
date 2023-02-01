@@ -16,12 +16,14 @@ def run_housecounter(district, runs):
     for i in range(runs):
         solution = model.Model(district)
         while solution.is_solution() is False:
+            solution = model.Model(district)
             housecount = housecounter.Housecounter(solution)
             solution = housecount.run_housecounter()
             costs = solution.return_total_costs()
             cost.append(costs)
 
     saving_plots(district, runs, solution, cost)
+    return solution
 
 
 def saving_plots(district, runs, solution, cost):

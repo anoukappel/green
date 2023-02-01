@@ -7,6 +7,30 @@ en elk huis moet verbonden worden.
 
 # Aan de slag
 
+## De algoritmes
+We hebben vier algoritmes geimplementeerd in de code om een tot een geldige oplossing te komen.
+Een geldige oplossing betekend dat elk huis een connectie heeft met een batterij en dat de capaciteit van de
+batterijen niet overschreden gaat worden.
+Onze algoritmes focussen zich op de volgorde van huizen connecten met de dichtbijzijnde batterij.
+Hierbij nemen we altijd de snelste route naar een batterij of een andere kabel.
+
+##### Random + Greedy
+Het random component zit in het selecteren van de huizen, het greedy element zit hem in dat wij telkens het huis verbinden met de dichtstbijzijnde beschikbare batterij of aan een stuk kabel dat al neergelegd is.
+
+##### Housecounter
+Dit algoritme verdeeld de grid over 25 blokken en probeerd dan zolang de batterij capaciteit het toelaat het
+hele blok aan dezelfde batterij te koppelen. Hij begint de huizen te koppelen per blok en begint bij het blok
+waar de meeste huizen in staan. Huizen die niet aan deze batterij gekoppeld kunnen worden, worden als laatste
+op een random volgorde aan batterijen gekoppeld.
+
+#### Hillclimber
+Dit algoritme neemt als input een geldige oplossing verkregen uit de oplossing van random+greedy of housecounter. En verwisselt steeds 2 of meerdere huizen van batterij per iteratie. Wanneer de oplossing verbeterd (lees de totale kosten worden verlaagd), dan wordt deze oplossing
+opgeslagen en gebruikt in de volgende iteratie.
+
+#### Simulatedannealing
+Dit algoritme lijkt veel op hillclimber, maar er zijn verschillen. Zo begint SA ook met een al eerder verkregen oplossing van random+greedy of housecounter. Vervolgens verwisseld het ook steeds twee huizen en kijkt of de oplossing geldig is. Als de nieuwe oplossing een verbetering is dan wordt dit het nieuwe model. Als het geen verbetering is, kan de nieuwe oplossing worden aangenomen. Of dit gebeurd is afhankelijk van de temperatuur.
+Als de temperatuur hoog is dan is de kans dat een slechte verandering wordt aangenomen groot. Als de temperatuur laag is, is deze kans juist heel laag. De temperatuur zal steeds verder zakken naarmate het algoritme aan de gang is. Hierdoor zal naarmate het algoritme bezig is steeds minder slechte veranderingen worden aangenomen. Hierdoor kom je uiteindelijk op een zo laag mogelijk aantal kabels uit. 
+
 ## Vereisten
 De code is volledig geschreven in Python 3.7.  Verder zijn er geen packages nodig om de code succesvol te draaien.
 
