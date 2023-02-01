@@ -1,12 +1,9 @@
 from code.algorithms import random
 import matplotlib.pyplot as plt
-# import copy
-# import csv
 from code.solutions import save_solution
-# from code.classes import model
 from code.visualisatie import histogram, scatterplot
-# from code.algorithms import random
 from code.classes.district import District
+from code.solutions import save_solution
 
 def baseline(district: District, iterations: int):
     """
@@ -20,3 +17,5 @@ def baseline(district: District, iterations: int):
 
     scatterplot.show_scatterplot(optimal_model, multiple_plots = False)
     plt.savefig(f"code/experiments/random_experiment/grid_district_{district.district}_iterations_{iterations}")
+
+    save_solution.save(f"random_experiment/baseline_district_{district.district}_iterations__{iterations}")

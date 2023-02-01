@@ -35,7 +35,6 @@ def house_counter_hillclimb(district: District, runs: int, number_of_switch: int
     smallest_solution = housecounter_experiments.run_housecounter(district, runs)
 
     # fill list of total cost to display in histogram
-    lowest_costs_hist.append(smallest_solution.return_total_costs())
     start_cost = 40000
     for i in range(runs):
         best_model, costs = hillclimb(number_of_switch, iterations, smallest_solution)
@@ -89,7 +88,7 @@ def saving_plots(district: District, runs: int, number_of_switch: int, iteration
     plt.xlabel("Iterations")
     plt.ylabel("Total costs")
     plt.title(f"Best solution of hillclimber in combination with {start_model}.")
-    plt.ylim(30300, 32000)
+    plt.ylim(30200, 34500)
     plt.savefig(f"code/experiments/hillclimber_experiment/{start_model}_runs_{runs}_iterations_{iterations}")
     plt.close()
 

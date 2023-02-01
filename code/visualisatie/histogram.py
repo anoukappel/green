@@ -15,7 +15,7 @@ def plotting_histogram(array_input, x_title: str, y_title: str, title: str) -> N
 
 def multiple_histograms(costs_ar_1, name_1, costs_ar_2, name_2, costs_ar_3 = False, name_3 = '', costs_ar_4 = False, name_4 = '') -> None:
     """
-    PLots mutiple histograms in one plot.
+    Plots mutiple histograms in one plot.
     """
     fig, ax = plt.subplots()
     ax.hist(costs_ar_1, 10, None, ec='red', fc='none', lw=1.5, histtype='step', label= name_1)

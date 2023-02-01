@@ -15,7 +15,7 @@ class HillClimber:
             raise Exception("Please provide a complete solution.")
 
         self.model: Model = model.copy()
-        self.new_model = model
+        self.new_model = None
         self.values = [int(model.return_total_costs())]
 
 

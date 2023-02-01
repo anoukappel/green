@@ -26,7 +26,6 @@ def run_housecounter(district: District, runs: int) -> Model:
         cost.append(costs)
 
     saving_plots(district, runs, solution, cost)
-    print(costs)
     return solution
 
 

@@ -92,6 +92,7 @@ def saving_plots(district: District, runs: int, number_of_switch: int, iteration
     plt.xlabel("Iterations")
     plt.ylabel("Total costs")
     plt.title(f"Best solution of simulated annealing in combination with {start_model}.")
+    plt.ylim(30200, 34500)
     plt.savefig(f"code/experiments/simulated_annealing_experiments/{start_model}_runs_{runs}_starttemp_{start_temp}_raise_temp_{raise_temp}")
     plt.close()
 
