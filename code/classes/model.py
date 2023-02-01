@@ -43,7 +43,10 @@ class Model(object):
 
 
     def reduce_capacity(self, battery, house):
-        """ Reduce a batteries capacity with the given maxoutput of the house."""
+        """
+        Reduce a batteries capacity with the given maxoutput of the house, also checks if
+        a battery's capacity becomes negative.
+        """
         self.battery_capacity[battery] = self.battery_capacity[battery] - house.maxoutput
         if self.battery_capacity[battery] < 0:
             self.positive_capacities = False
@@ -69,11 +72,11 @@ class Model(object):
         return self.positive_capacities
 
 
-    def get_houses(self):
-        """
-        Return the list of houses available in the model.
-        """
-        return list(self.solutions.keys())
+    # def get_houses(self):
+    #     """
+    #     Return the list of houses available in the model.
+    #     """
+    #     return list(self.solutions.keys())
 
 
     def has_connection(self, house):
@@ -107,7 +110,9 @@ class Model(object):
             self.solution[house] = battery
 
     def set_connection_given_battery(self, house, battery):
-        """ sets the connection between house and battery """
+        """
+        Sets the connection between house and battery.
+        """
         position = house.get_closest_battery_or_cable(self.battery_positions[battery])
         self.reduce_capacity(battery, house)
         house_position = [house.x_position, house.y_position]
@@ -115,23 +120,26 @@ class Model(object):
         self.solution[house] = battery
 
     def set_connection_block_given_battery(self, house, position, list_batteries):
-            battery = None
-            for key in list_batteries:
-                for list in self.battery_cable[key]:
-                    for item in list:
-                        if item == position:
-                            battery = key
-                            break
+        """
+        Sets the connection between block and a given battery.
+        """
+        battery = None
+        for key in list_batteries:
+            for list in self.battery_cable[key]:
+                for item in list:
+                    if item == position:
+                        battery = key
+                        break
 
-            if self.check_capicity(house, battery) == False:
-                return False
+        if self.check_capacity(house, battery) == False:
+            return False
 
-            elif battery is not None:
-                self.reduce_capacity(battery, house)
-                house_position = [house.x_position, house.y_position]
-                self.add_route_from_house_to_battery(battery, house_position, position)
-                self.solution[house] = battery
-                return True
+        elif battery is not None:
+            self.reduce_capacity(battery, house)
+            house_position = [house.x_position, house.y_position]
+            self.add_route_from_house_to_battery(battery, house_position, position)
+            self.solution[house] = battery
+            return True
 
 
     def get_closest_position(self, house):
@@ -141,15 +149,10 @@ class Model(object):
             return position, list_batteries
 
     def get_distance(self, house, position):
-        # if self.get_available_batteries(house) != []:
-        #     list_grids, list_batteries = self.get_available_batteries(house)
-        #     position = house.get_closest_battery_or_cable(list_grids)
-        #     print(list_grids)
-        #     print(position)
-            distance = house.get_distance_to_battery_or_cable(position[0], position[1])
-            return distance
+        distance = house.get_distance_to_battery_or_cable(position[0], position[1])
+        return distance
 
-    def check_capicity(self, house, battery):
+    def check_capacity(self, house, battery):
         check = False
         if self.battery_capacity[battery] > house.maxoutput:
             check = True
@@ -194,7 +197,9 @@ class Model(object):
 
 
     def add_horizontal_steps(self, position, house_position, list, battery):
-        """ adding the horizontal steps towards the battery """
+        """
+        Adding the horizontal steps towards the battery.
+        """
         if house_position[0] < position[0]:
             steps = position[0] - house_position[0]
             for i in range(steps + 1):
@@ -211,7 +216,8 @@ class Model(object):
 
 
     def add_vertical_steps(self, position, house_position, list, battery):
-        """ adding the vertical steps towards the battery, from postition of latest cable """
+        """
+        Adding the vertical steps towards the battery, from postition of latest cable """
         if house_position[1] < position[1]:
             steps = position[1] - house_position[1]
             for i in range(steps):

@@ -27,9 +27,9 @@ if __name__ == "__main__":
     """ Housecounter algorithm"""
     # parameters used in the housecounter, if changed and algorithm is runned again than new plots will be saved
     runs = 5
-    
+
     # running the algorithm
-    housecounter_experiments.run_housecounter(district_test, runs)
+    # housecounter_experiments.run_housecounter(district_test, runs)
 
     """ Hillclimber algortihm """
     #parameters used in the hillclimber, if changed and algorithm is runned again than new plots will be saved
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     # run the algorithm using the best of a number of random solutions as a starting point
     # hillclimber_experiment.multiple_runs(district_test, number_of_runs, houses_to_switch, iterations, random_runs)
     # run the algorithm using house_counter solution as a starting point
-    hillclimber_experiment.house_counter_hillclimb(district_test, number_of_runs,  houses_to_switch, iterations)
+    # hillclimber_experiment.house_counter_hillclimb(district_test, number_of_runs,  houses_to_switch, iterations)
 
     """ Simulated annealing """
     # # parameters used in simulated annealing algorithm, if changed and algorithm is runned again than new plots will be saved
@@ -59,9 +59,9 @@ if __name__ == "__main__":
     # simulatedannealing_experiment.random_simulated_an(district, random_runs, number_of_runs, houses_to_switch, iterations, start_temp, raise_temp)
 
     # code voor histogram
-    smallest_solution, costs_rg = random.run(15, district_test)
-    smallest_solution_2, costs_test = random.run(30, district_test)
-
-    best_model, costs_hi = hill_climber_experiment.hillclimb(district_test, 2, 15)
-    # print(costs)
-    histogram.multiple_histograms(costs_rg, "random + greedy", costs_hi, "hillclimber", costs_ar_3 = costs_test, name_3 ="Test")
+    # smallest_solution, costs_rg = random.run(15, district_test)
+    # smallest_solution_2, costs_test = random.run(30, district_test)
+    #
+    # best_model, costs_hi = hill_climber_experiment.hillclimb(district_test, 2, 15)
+    # # print(costs)
+    # histogram.multiple_histograms(costs_rg, "random + greedy", costs_hi, "hillclimber", costs_ar_3 = costs_test, name_3 ="Test")

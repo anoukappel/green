@@ -1,16 +1,15 @@
 from .battery import Battery
-
 from .house import House
 import csv
 
 class District(object):
-    def __init__(self, source_file, geo_json=None):
+    def __init__(self, source_file: str, geo_json = None) -> None:
         self.houses = self.load_houses(f"{source_file}/district-1_houses.csv")
         self.batteries = self.load_batteries(f"{source_file}/district-1_batteries.csv")
         self.district = int(source_file[-1])
 
 
-    def load_houses(self, houses_file):
+    def load_houses(self, houses_file: str) -> list[House]:
         """ load all the houses in District """
         houses = []
 
@@ -23,7 +22,7 @@ class District(object):
         return houses
 
 
-    def load_batteries(self, battery_file):
+    def load_batteries(self, battery_file:str) -> list[Battery]:
         """ load all the batteries in District """
         batteries = []
         with open(battery_file, 'r') as file:

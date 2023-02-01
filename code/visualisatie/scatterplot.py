@@ -1,7 +1,13 @@
+
 import matplotlib.pyplot as plt
 import numpy as np
+from typing import Any, Tuple, Optional
+from code.classes.model import Model
 
-def creating_grid_district():
+def creating_grid_district() -> None:
+    """
+    Function that creates a 50 x 50 grid.
+    """
     fig = plt.figure(figsize=(10, 8))
     ax = fig.add_subplot(1, 1, 1)
 
@@ -14,28 +20,35 @@ def creating_grid_district():
     ax.set_yticks(major_ticks)
     ax.set_yticks(minor_ticks, minor=True)
 
-    # And a corresponding grid
     ax.grid(which='both')
-
-    # Or if you want different settings for the grids:
     ax.grid(which='minor', alpha=0.2)
     ax.grid(which='major', alpha=0.5)
 
-def plot_one_battery(x_battery, y_battery, color):
+def plot_one_battery(x_battery: int, y_battery: int, color: Any) -> None:
+    """
+    Function that plots one of the batteries on the grid with chosen color.
+    """
     plt.plot(x_battery, y_battery, color = color, marker = 's', markersize = 8)
 
-def plot_element(cables_coordinates, color, marker = "", linestyle = ""):
+def plot_element(coordinates_list: list[int], color: Any, marker = "", linestyle = "")   -> None:
+    """
+    Function that plots a coordinate on the grid.
+    """
     cb_x = []
     cb_y = []
 
-    for cable_point in cables_coordinates:
-        cb_x.append(cable_point[0])
-        cb_y.append(cable_point[1])
+    for coordinate in coordinates_list:
+        cb_x.append(coordinate[0])
+        cb_y.append(coordinate[1])
 
     plt.plot(cb_x, cb_y, color = color, marker = marker, linestyle = linestyle)
 
 
-def show_scatterplot(smallest_solution, multiple_plots = True):
+def show_scatterplot(smallest_solution: Model, multiple_plots = True) -> None:
+    """
+    Function that plots all the houses, batteries and all the cables.
+    """
+
     colors = ['b', 'c', 'g', 'r', 'k', 'm']
 
     creating_grid_district()
@@ -50,7 +63,7 @@ def show_scatterplot(smallest_solution, multiple_plots = True):
             houses_certain_battery.append(item[0])
             coordinates_cables= item
             # plotting the cables
-            plot_element(coordinates_cables, color = 'b', linestyle = '-')
+            plot_element(coordinates_cables, color = colors[i], linestyle = '-')
 
         # plotting the houses in color
         plot_element(houses_certain_battery, colors[i], marker = 'o')
@@ -59,5 +72,5 @@ def show_scatterplot(smallest_solution, multiple_plots = True):
         if multiple_plots and i < 5:
             creating_grid_district()
 
-    # plt.show()
-    # plt.close()
+    plt.show()
+    plt.close()
