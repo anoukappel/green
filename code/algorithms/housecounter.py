@@ -11,12 +11,11 @@ class Housecounter:
     The block with the most houses will be connected first and with the least
     houses last.
     """
-
-
     def __init__(self, model):
         self.model = model
         self.blocks = {}
         self.houses_left = []
+
 
     def make_blocks(self):
         """
@@ -25,6 +24,7 @@ class Housecounter:
         """
         for i in range(25):
             self.blocks[i] = []
+
 
     def fill_blocks(self):
         """
@@ -55,6 +55,7 @@ class Housecounter:
                         break
             else:
                 counter += 5
+
 
     def largest_block(self):
         """

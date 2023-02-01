@@ -83,7 +83,7 @@ if __name__ == "__main__":
     #     smallest_solution, list_cable_length = random.run(1, district_test)
     print("run SA")
     sa = simulatedannealing.SimulatedAnnealing(smallest_solution, 20, 10)
-    sa.run_hillclimber(10000, 1)
+    sa.run(10000, 1)
     best_model = sa.best_model
     best_costs = best_model.return_total_costs()
     print(best_costs)
@@ -92,9 +92,9 @@ if __name__ == "__main__":
 
     # histogram.plotting_histogram(list_cable_lengths)
 
-
-
-
+    # self.t_begin = temperature
+    # self.t_now = self.t_now - (self.t_begin / self.iterations)
+    
     #
     plt.plot(range(10000), sa.values)
     # plt.savefig('RG, 500, 1000 (10b).jpg')

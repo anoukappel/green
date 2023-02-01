@@ -5,11 +5,14 @@ from code.algorithms.hillclimber import HillClimber
 
 class SimulatedAnnealing(HillClimber):
     """
-    The simulated annealing class switches houses to 
+    The simulated annealing class switches houses. When the new solution is valid,
+    it checks what the new number of cables is. When it is less than before, the
+    change will be accepted. When it is more than it was before, it will check
+    if this change is acceptable for the time being. The model with the lowest
+    value will be saved.
     """
-    def __init__(self, model, temperature=1, raise_temp=10):
+    def __init__(self, model, temperature=1, raise_temp=5):
         super().__init__(model)
-        self.t_begin = temperature
         self.raise_temp = raise_temp
         self.model_temp = model
         self.t_now = temperature
@@ -19,51 +22,63 @@ class SimulatedAnnealing(HillClimber):
         self.old_value = len(self.model_temp.cables)
         self.lowest_value = 100000
         self.best_model = None
-        self.max_difference = 100000
+        self.max_acceptable_value = 100000
         self.temps = []
 
 
-
     def calculate_temp(self):
-        self.t_now = self.t_now - (self.t_begin / self.iterations)
-        # print(f"temp: {self.t_now}")
+        """
+        This exponential formula will calculate the new temperature.
+        """
+        alpha = 0.99
+        self.t_now = self.t_now * alpha
 
-        # alpha = 0.99
-        # self.t_now = self.t_now * alpha
-
+        # keeps track of the temperatures
         self.temps.append(self.t_now)
 
 
     def check_temp(self):
+        """
+        When the value stays the same for 500 iterations, the temperature
+        will go up again.
+        """
         if self.counter == 500:
-            print(self.t_now)
             self.t_now = self.raise_temp
             self.counter = 0
-            self.max_difference = self.old_value * 1.01
+
+            # caculates the maximum acceptable value in case of higher value
+            self.max_acceptable_value = self.old_value * 1.02
 
 
     def check_solution(self, new_model):
+        """
+        Caculates the new and old value of the models. Than caculates the
+        probability. If the new model is a valid solution, the probability
+        will be compared to a random number between 0 and 1. When it is lower and
+        the new value is less than the maximum acceptable value, then the new
+        model will be aceppeted and a new temperature will be calculated.
+        """
         self.new_value = len(self.new_model.cables)
-
         self.old_value = len(self.model_temp.cables)
 
         try:
             probability = math.exp(-(self.new_value - self.old_value) / self.t_now)
 
-
             if self.new_model.is_solution():
-                if random.random() < probability and self.new_value < self.max_difference:
+                if random.random() < probability and self.new_value < self.max_acceptable_value:
                     self.model_temp = self.new_model
+                    # the model with the lowest value will be saved as best model
                     if len(self.model_temp.cables) < self.lowest_value:
                         self.lowest_value = len(self.model_temp.cables)
                         self.best_model = self.model_temp
-                    # print("the model is changed")
-                    # print(self.new_value)
+                    # keeps track of all the values in costs
                     self.values.append(int(self.model_temp.return_total_costs()))
                     counter = 0
                 else:
+                    # keeps track of all the values in costs
                     self.values.append(int(self.model_temp.return_total_costs()))
                     self.counter += 1
+
                 self.check_temp()
                 self.calculate_temp()
 
