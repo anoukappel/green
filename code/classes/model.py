@@ -160,7 +160,7 @@ class Model(object):
 
     def get_battery_positions(self):
         """
-        Returns a list of available batteries
+        Returns a list of available batteries.
         """
         list = []
         for item in self.district.batteries:
@@ -169,7 +169,9 @@ class Model(object):
 
 
     def get_available_batteries(self, house):
-        """ returns gridpoints batteries and cables that are available """
+        """
+        Returns gridpoints batteries and cables that are available.
+        """
         list_grids = []
         list_batteries = []
         for battery in self.district.batteries:
@@ -182,7 +184,7 @@ class Model(object):
 
     def add_cable(self, x_position, y_position):
         """
-        add postition of cable to the object House
+        Add postition of cable to the object House.
         """
         self.cables.append([x_position,y_position])
 
@@ -190,7 +192,7 @@ class Model(object):
 
     def connect_battery_to_cable(self, battery, list):
         """
-        add connection between cable and battery
+        Add connection between cable and battery.
         """
         self.battery_cable[battery].append(list)
 
@@ -217,7 +219,8 @@ class Model(object):
 
     def add_vertical_steps(self, position, house_position, list, battery):
         """
-        Adding the vertical steps towards the battery, from postition of latest cable """
+        Adding the vertical steps towards the battery, from postition of latest cable.
+        """
         if house_position[1] < position[1]:
             steps = position[1] - house_position[1]
             for i in range(steps):
@@ -234,7 +237,9 @@ class Model(object):
 
 
     def remove_duplicates(self):
-        """ removes duplicates in self.battery_positions """
+        """
+        Removes duplicates in self.battery_positions.
+        """
         for key in self.battery_positions:
             duplicates = self.battery_positions[key]
             tpls = [tuple(x) for x in duplicates]
@@ -244,7 +249,9 @@ class Model(object):
             self.battery_positions[key] = dup_free
 
     def add_route_from_house_to_battery(self, battery, house_position, position):
-        """ add route of cables needed to go from house to battery """
+        """
+        Add route of cables needed to go from house to battery.
+        """
         list = []
         list = self.add_horizontal_steps(position, house_position, list, battery)
         list_with_coordinates = self.add_vertical_steps(position, house_position, list, battery)

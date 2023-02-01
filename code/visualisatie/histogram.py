@@ -9,5 +9,16 @@ def plotting_histogram(array_input, x_title, y_title, title):
     plt.ylabel(y_title)
     plt.title(title)
     # plt.show()
-    # plt.savefig('graph_histo.png', dpi=300, bbox_inches='tight')
-#     plt.close()
+    # plt.close()
+
+def multiple_histograms(costs_ar_1, name_1, costs_ar_2, name_2, costs_ar_3 = False, name_3 = '', costs_ar_4 = False, name_4 = ''):
+    fig, ax = plt.subplots()
+    ax.hist(costs_ar_1, 10, None, ec='red', fc='none', lw=1.5, histtype='step', label= name_1)
+    ax.hist(costs_ar_2, 10, None, ec='green', fc='none', lw=1.5, histtype='step', label= name_2)
+    if costs_ar_3:
+        ax.hist(costs_ar_3, 10, None, ec='blue', fc='none', lw=1.5, histtype='step', label= name_3)
+    if costs_ar_4:
+        ax.hist(costs_ar_4, 10, None, ec='yellow', fc='none', lw=1.5, histtype='step', label= name_4)
+
+    ax.legend(loc='upper right')
+    # plt.show()

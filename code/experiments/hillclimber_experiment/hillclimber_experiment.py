@@ -1,12 +1,8 @@
-
 from code.algorithms import random, hillclimber, housecounter
 import matplotlib.pyplot as plt
-import copy
-import csv
 from code.solutions import save_solution
 from code.classes import model
 from code.visualisatie import histogram, scatterplot
-from code.experiments import random_experiment
 
 
 def hillclimb(number_of_switch, iterations, solution):
@@ -43,8 +39,8 @@ def house_counter_hillclimb(district, runs, number_of_switch, iterations):
             optimal_model = best_model
             cost = costs
 
-    saving_plots(district, runs, number_of_switch, iterations, cost, lowest_costs_hist, optimal_model, "housecounter")
-
+    # saving_plots(district, runs, number_of_switch, iterations, cost, lowest_costs_hist, optimal_model, "housecounter")
+    return lowest_costs_hist
 
 
 
@@ -60,8 +56,8 @@ def multiple_runs(district, runs, number_of_switch, iterations, random_runs):
             optimal_model = best_model
             cost = costs
 
-    saving_plots(district, runs, number_of_switch, iterations, cost, lowest_costs_hist, optimal_model, "random_+_greedy")
-
+    # saving_plots(district, runs, number_of_switch, iterations, cost, lowest_costs_hist, optimal_model, "random_+_greedy")
+    return lowest_costs_hist
 
 
 

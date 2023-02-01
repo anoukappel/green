@@ -1,4 +1,3 @@
-from code.classes.house import House
 
 
 class Battery(object):
@@ -11,8 +10,6 @@ class Battery(object):
     def has_capacity(self) -> float:
         return self.capacity
 
-    # def reduce_capacity(self, house: House) -> None:
-    #     self.capacity = self.capacity - house.maxoutput
 
     def __repr__(self) -> str:
         """ Let the object be printed properly when its called for """

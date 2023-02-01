@@ -3,9 +3,9 @@ from .house import House
 import csv
 
 class District(object):
-    def __init__(self, source_file: str, geo_json = None) -> None:
-        self.houses = self.load_houses(f"{source_file}/district-1_houses.csv")
-        self.batteries = self.load_batteries(f"{source_file}/district-1_batteries.csv")
+    def __init__(self, source_file: str, district: str, geo_json = None) -> None:
+        self.houses = self.load_houses(f"{source_file}/district-{district}_houses.csv")
+        self.batteries = self.load_batteries(f"{source_file}/district-{district}_batteries.csv")
         self.district = int(source_file[-1])
 
 

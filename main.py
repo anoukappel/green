@@ -15,10 +15,10 @@ import numpy as np
 
 if __name__ == "__main__":
     """ creation of district object """
-    wijk = 1
-    file = f"data/Huizen&Batterijen/district_{wijk}"
+    district_number = 1
+    file = f"data/Huizen&Batterijen/district_{district_number}"
     # object district aanmaken bestaande uit batteries en huizen data
-    district_test = district.District(file)
+    district_test = district.District(file, district_number)
 
     """ The experiments """
     """ Random algoritme """
@@ -33,10 +33,10 @@ if __name__ == "__main__":
 
     """ Hillclimber algortihm """
     #parameters used in the hillclimber, if changed and algorithm is runned again than new plots will be saved
-    number_of_runs = 50
+    number_of_runs = 1
     houses_to_switch = 1
-    iterations = 2000
-    random_runs = 10
+    iterations = 400
+    random_runs = 1
 
     # run the algorithm using the best of a number of random solutions as a starting point
     # hillclimber_experiment.multiple_runs(district_test, number_of_runs, houses_to_switch, iterations, random_runs)
@@ -50,13 +50,15 @@ if __name__ == "__main__":
     iterations = 1000
     start_temp = 50
     raise_temp = 20
-    random_runs = 10
+    random_runs = 1
+    iterations_without_change = 200
     #
     # # run the algorithm using house_counter solution as a starting point
      # simulatedannealing_experiment.house_counter_simulated_an(district_test, number_of_runs, houses_to_switch, iterations, start_temp, raise_temp)
     #
     # # run the algorithm using the best of a number of random solutions as a starting point
-    # simulatedannealing_experiment.random_simulated_an(district, random_runs, number_of_runs, houses_to_switch, iterations, start_temp, raise_temp)
+    simulatedannealing_experiment.random_simulated_an(district_test, random_runs, number_of_runs, houses_to_switch, iterations, start_temp, raise_temp, iterations_without_change)
+    """ Saving the histogram for all algorithms into one histogram. """
 
     # code voor histogram
     # smallest_solution, costs_rg = random.run(15, district_test)

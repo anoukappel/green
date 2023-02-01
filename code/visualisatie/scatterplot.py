@@ -72,5 +72,5 @@ def show_scatterplot(smallest_solution: Model, multiple_plots = True) -> None:
         if multiple_plots and i < 5:
             creating_grid_district()
 
-    plt.show()
-    plt.close()
+    # plt.show()
+    # plt.close()
