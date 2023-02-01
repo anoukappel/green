@@ -50,3 +50,11 @@ if __name__ == "__main__":
     #
     # # run the algorithm using the best of a number of random solutions as a starting point
     # simulatedannealing_experiment.random_simulated_an(district, random_runs, number_of_runs, houses_to_switch, iterations, start_temp, raise_temp)
+
+    # code voor histogram
+    smallest_solution, costs_rg = random.run(15, district_test)
+    smallest_solution_2, costs_test = random.run(30, district_test)
+
+    best_model, costs_hi = hill_climber_experiment.hillclimb(district_test, 2, 15)
+    # print(costs)
+    histogram.multiple_histograms(costs_rg, "random + greedy", costs_hi, "hillclimber", costs_ar_3 = costs_test, name_3 ="Test")
