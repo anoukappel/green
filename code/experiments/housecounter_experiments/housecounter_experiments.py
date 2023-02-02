@@ -24,9 +24,9 @@ def run_housecounter(district: District, runs: int) -> Model:
             housecount = housecounter.Housecounter(solution)
             solution = housecount.run_housecounter()
             costs = solution.return_total_costs()
-            if costs < lowest_costs:
-                smallest_solution = solution
-                lowest_costs = costs 
+        if costs < lowest_costs:
+            smallest_solution = solution
+            lowest_costs = costs
         cost.append(costs)
 
     saving_plots(district, runs, solution, cost)
