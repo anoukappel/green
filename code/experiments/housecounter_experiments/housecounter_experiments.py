@@ -16,17 +16,22 @@ def run_housecounter(district: District, runs: int) -> Model:
     each run.
     """
     cost: list = []
+    lowest_costs = 100000
     for i in range(runs):
         solution = model.Model(district)
         while solution.is_solution() is False:
             solution = model.Model(district)
             housecount = housecounter.Housecounter(solution)
             solution = housecount.run_housecounter()
-        costs = solution.return_total_costs()
+            costs = solution.return_total_costs()
+            if costs < lowest_costs:
+                smallest_solution = solution
+                lowest_costs = costs 
+                print(lowest_costs)
         cost.append(costs)
 
     saving_plots(district, runs, solution, cost)
-    return solution
+    return smallest_solution
 
 
 def saving_plots(district: District, runs: int, solution: Model, cost: int) -> None:
